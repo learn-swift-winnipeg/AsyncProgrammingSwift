@@ -19,6 +19,15 @@
 		003327481FDAC20E0058426B /* LoadableFromStoryboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327471FDAC20E0058426B /* LoadableFromStoryboard.swift */; };
 		0033274B1FDAC6600058426B /* EventsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033274A1FDAC6600058426B /* EventsViewController.swift */; };
 		0033274D1FDAC6AE0058426B /* Events.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0033274C1FDAC6AE0058426B /* Events.storyboard */; };
+		003327521FDAE2190058426B /* GroupHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327511FDAE2190058426B /* GroupHeaderCell.swift */; };
+		003327541FDAE89F0058426B /* EventCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327531FDAE89F0058426B /* EventCell.swift */; };
+		003327561FDAEEAB0058426B /* BorderedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327551FDAEEAB0058426B /* BorderedView.swift */; };
+		003327581FDAFA160058426B /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327571FDAFA160058426B /* Event.swift */; };
+		0033275A1FDAFA2D0058426B /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327591FDAFA2D0058426B /* Group.swift */; };
+		0033275C1FDAFAD40058426B /* EventsViewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275B1FDAFAD40058426B /* EventsViewData.swift */; };
+		0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275D1FDB07390058426B /* RsvpIconCell.swift */; };
+		003327601FDB1B9B0058426B /* Rsvp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275F1FDB1B9B0058426B /* Rsvp.swift */; };
+		003327621FDB310A0058426B /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327611FDB310A0058426B /* DispatchQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +45,15 @@
 		003327471FDAC20E0058426B /* LoadableFromStoryboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadableFromStoryboard.swift; sourceTree = "<group>"; };
 		0033274A1FDAC6600058426B /* EventsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewController.swift; sourceTree = "<group>"; };
 		0033274C1FDAC6AE0058426B /* Events.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Events.storyboard; sourceTree = "<group>"; };
+		003327511FDAE2190058426B /* GroupHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupHeaderCell.swift; sourceTree = "<group>"; };
+		003327531FDAE89F0058426B /* EventCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCell.swift; sourceTree = "<group>"; };
+		003327551FDAEEAB0058426B /* BorderedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedView.swift; sourceTree = "<group>"; };
+		003327571FDAFA160058426B /* Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		003327591FDAFA2D0058426B /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
+		0033275B1FDAFAD40058426B /* EventsViewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsViewData.swift; sourceTree = "<group>"; };
+		0033275D1FDB07390058426B /* RsvpIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RsvpIconCell.swift; sourceTree = "<group>"; };
+		0033275F1FDB1B9B0058426B /* Rsvp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rsvp.swift; sourceTree = "<group>"; };
+		003327611FDB310A0058426B /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +88,8 @@
 			children = (
 				003327321FDABC160058426B /* Application */,
 				003327381FDABE170058426B /* Screens */,
-				003327491FDAC22F0058426B /* General Helpers */,
+				003327491FDAC22F0058426B /* General */,
+				003327631FDB31F20058426B /* Extensions */,
 				0033273A1FDABE590058426B /* Assets */,
 				0033273D1FDABEE50058426B /* Providers */,
 			);
@@ -128,6 +147,9 @@
 			isa = PBXGroup;
 			children = (
 				0033273B1FDABEDD0058426B /* Providers.swift */,
+				003327571FDAFA160058426B /* Event.swift */,
+				0033275F1FDB1B9B0058426B /* Rsvp.swift */,
+				003327591FDAFA2D0058426B /* Group.swift */,
 			);
 			path = Providers;
 			sourceTree = "<group>";
@@ -156,21 +178,34 @@
 			path = "Fourth Tab";
 			sourceTree = "<group>";
 		};
-		003327491FDAC22F0058426B /* General Helpers */ = {
+		003327491FDAC22F0058426B /* General */ = {
 			isa = PBXGroup;
 			children = (
 				003327471FDAC20E0058426B /* LoadableFromStoryboard.swift */,
+				003327551FDAEEAB0058426B /* BorderedView.swift */,
 			);
-			path = "General Helpers";
+			path = General;
 			sourceTree = "<group>";
 		};
 		0033274E1FDAC6B40058426B /* Events */ = {
 			isa = PBXGroup;
 			children = (
 				0033274C1FDAC6AE0058426B /* Events.storyboard */,
+				0033275B1FDAFAD40058426B /* EventsViewData.swift */,
 				0033274A1FDAC6600058426B /* EventsViewController.swift */,
+				003327511FDAE2190058426B /* GroupHeaderCell.swift */,
+				003327531FDAE89F0058426B /* EventCell.swift */,
+				0033275D1FDB07390058426B /* RsvpIconCell.swift */,
 			);
 			path = Events;
+			sourceTree = "<group>";
+		};
+		003327631FDB31F20058426B /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				003327611FDB310A0058426B /* DispatchQueue.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -246,14 +281,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				003327481FDAC20E0058426B /* LoadableFromStoryboard.swift in Sources */,
+				003327621FDB310A0058426B /* DispatchQueue.swift in Sources */,
+				0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */,
+				003327521FDAE2190058426B /* GroupHeaderCell.swift in Sources */,
 				0033273C1FDABEDD0058426B /* Providers.swift in Sources */,
 				003327341FDABC6D0058426B /* AppCoordinator.swift in Sources */,
 				003327451FDAC0C20058426B /* FourthTabCoordinator.swift in Sources */,
 				003327421FDAC0A60058426B /* ThirdTabCoordinator.swift in Sources */,
 				003327211FDABBF10058426B /* AppDelegate.swift in Sources */,
+				0033275A1FDAFA2D0058426B /* Group.swift in Sources */,
+				003327561FDAEEAB0058426B /* BorderedView.swift in Sources */,
+				0033275C1FDAFAD40058426B /* EventsViewData.swift in Sources */,
+				003327601FDB1B9B0058426B /* Rsvp.swift in Sources */,
 				0033273F1FDAC0800058426B /* SecondTabCoordinator.swift in Sources */,
 				003327361FDABE060058426B /* FirstTabCoordinator.swift in Sources */,
+				003327541FDAE89F0058426B /* EventCell.swift in Sources */,
 				0033274B1FDAC6600058426B /* EventsViewController.swift in Sources */,
+				003327581FDAFA160058426B /* Event.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
