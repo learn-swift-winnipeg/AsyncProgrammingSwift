@@ -2,7 +2,8 @@ struct Providers {
     
     // MARK: - Stored Properties
     
-    // TODO: Implement.
+    let meetupProvider: MeetupProvider
+    let imageCacheProvider: ImageCacheProvider
     
     // MARK: - Static
     
@@ -26,20 +27,28 @@ struct Providers {
     
     private static func makeTestingProviders() -> Providers {
         // TODO: Implement.
-        return Providers()
+        return Providers(
+            meetupProvider: TestingMeetupProvider(),
+            imageCacheProvider: TestingImageCacheProvider()
+        )
     }
     
     // MARK: - Debug
     
     private static func makeDebugProviders() -> Providers {
-        // TODO: Implement.
-        return Providers()
+        return Providers(
+            meetupProvider: TestingMeetupProvider(),
+            imageCacheProvider: TestingImageCacheProvider()
+        )
     }
     
     // MARK: - Release
     
     private static func makeReleaseProviders() -> Providers {
         // TODO: Implement.
-        return Providers()
+        return Providers(
+            meetupProvider: ProductionMeetupProvider(),
+            imageCacheProvider: ProductionImageCacheProvider()
+        )
     }
 }

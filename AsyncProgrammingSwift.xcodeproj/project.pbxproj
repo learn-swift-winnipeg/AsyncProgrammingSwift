@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0003A4E81FDD446900DA02BE /* TabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0003A4E71FDD446900DA02BE /* TabCoordinator.swift */; };
 		003327211FDABBF10058426B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327201FDABBF10058426B /* AppDelegate.swift */; };
 		003327281FDABBF10058426B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 003327271FDABBF10058426B /* Assets.xcassets */; };
 		0033272B1FDABBF10058426B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 003327291FDABBF10058426B /* LaunchScreen.storyboard */; };
@@ -28,9 +29,16 @@
 		0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275D1FDB07390058426B /* RsvpIconCell.swift */; };
 		003327601FDB1B9B0058426B /* Rsvp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275F1FDB1B9B0058426B /* Rsvp.swift */; };
 		003327621FDB310A0058426B /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327611FDB310A0058426B /* DispatchQueue.swift */; };
+		008E913C1FDD00F200E6F9AA /* MeetupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E913B1FDD00F200E6F9AA /* MeetupProvider.swift */; };
+		008E913E1FDD017000E6F9AA /* AsyncResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E913D1FDD017000E6F9AA /* AsyncResult.swift */; };
+		008E91401FDD027300E6F9AA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E913F1FDD027300E6F9AA /* Double.swift */; };
+		008E91421FDD123400E6F9AA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E91411FDD123400E6F9AA /* URL.swift */; };
+		008E91441FDD2CD900E6F9AA /* ImageCacheProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E91431FDD2CD900E6F9AA /* ImageCacheProvider.swift */; };
+		008E91481FDD2D3100E6F9AA /* MeetupSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E91471FDD2D3100E6F9AA /* MeetupSchedule.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0003A4E71FDD446900DA02BE /* TabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCoordinator.swift; sourceTree = "<group>"; };
 		0033271D1FDABBF10058426B /* AsyncProgrammingSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncProgrammingSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		003327201FDABBF10058426B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		003327271FDABBF10058426B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -54,6 +62,12 @@
 		0033275D1FDB07390058426B /* RsvpIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RsvpIconCell.swift; sourceTree = "<group>"; };
 		0033275F1FDB1B9B0058426B /* Rsvp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rsvp.swift; sourceTree = "<group>"; };
 		003327611FDB310A0058426B /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
+		008E913B1FDD00F200E6F9AA /* MeetupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetupProvider.swift; sourceTree = "<group>"; };
+		008E913D1FDD017000E6F9AA /* AsyncResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncResult.swift; sourceTree = "<group>"; };
+		008E913F1FDD027300E6F9AA /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
+		008E91411FDD123400E6F9AA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		008E91431FDD2CD900E6F9AA /* ImageCacheProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheProvider.swift; sourceTree = "<group>"; };
+		008E91471FDD2D3100E6F9AA /* MeetupSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetupSchedule.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,22 +120,23 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		003327371FDABE090058426B /* First Tab */ = {
+		003327371FDABE090058426B /* Tab Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				0003A4E71FDD446900DA02BE /* TabCoordinator.swift */,
 				003327351FDABE060058426B /* FirstTabCoordinator.swift */,
+				0033273E1FDAC0800058426B /* SecondTabCoordinator.swift */,
+				003327411FDAC0A60058426B /* ThirdTabCoordinator.swift */,
+				003327441FDAC0C20058426B /* FourthTabCoordinator.swift */,
 			);
-			path = "First Tab";
+			path = "Tab Coordinators";
 			sourceTree = "<group>";
 		};
 		003327381FDABE170058426B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				003327391FDABE370058426B /* Launch */,
-				003327371FDABE090058426B /* First Tab */,
-				003327401FDAC0830058426B /* Second Tab */,
-				003327431FDAC0AB0058426B /* Third Tab */,
-				003327461FDAC0C50058426B /* Fourth Tab */,
+				003327371FDABE090058426B /* Tab Coordinators */,
 				0033274E1FDAC6B40058426B /* Events */,
 			);
 			path = Screens;
@@ -147,35 +162,10 @@
 			isa = PBXGroup;
 			children = (
 				0033273B1FDABEDD0058426B /* Providers.swift */,
-				003327571FDAFA160058426B /* Event.swift */,
-				0033275F1FDB1B9B0058426B /* Rsvp.swift */,
-				003327591FDAFA2D0058426B /* Group.swift */,
+				008E91451FDD2D1700E6F9AA /* Meetup */,
+				008E91461FDD2D1F00E6F9AA /* ImageCache */,
 			);
 			path = Providers;
-			sourceTree = "<group>";
-		};
-		003327401FDAC0830058426B /* Second Tab */ = {
-			isa = PBXGroup;
-			children = (
-				0033273E1FDAC0800058426B /* SecondTabCoordinator.swift */,
-			);
-			path = "Second Tab";
-			sourceTree = "<group>";
-		};
-		003327431FDAC0AB0058426B /* Third Tab */ = {
-			isa = PBXGroup;
-			children = (
-				003327411FDAC0A60058426B /* ThirdTabCoordinator.swift */,
-			);
-			path = "Third Tab";
-			sourceTree = "<group>";
-		};
-		003327461FDAC0C50058426B /* Fourth Tab */ = {
-			isa = PBXGroup;
-			children = (
-				003327441FDAC0C20058426B /* FourthTabCoordinator.swift */,
-			);
-			path = "Fourth Tab";
 			sourceTree = "<group>";
 		};
 		003327491FDAC22F0058426B /* General */ = {
@@ -183,6 +173,7 @@
 			children = (
 				003327471FDAC20E0058426B /* LoadableFromStoryboard.swift */,
 				003327551FDAEEAB0058426B /* BorderedView.swift */,
+				008E913D1FDD017000E6F9AA /* AsyncResult.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -204,8 +195,30 @@
 			isa = PBXGroup;
 			children = (
 				003327611FDB310A0058426B /* DispatchQueue.swift */,
+				008E913F1FDD027300E6F9AA /* Double.swift */,
+				008E91411FDD123400E6F9AA /* URL.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		008E91451FDD2D1700E6F9AA /* Meetup */ = {
+			isa = PBXGroup;
+			children = (
+				008E913B1FDD00F200E6F9AA /* MeetupProvider.swift */,
+				008E91471FDD2D3100E6F9AA /* MeetupSchedule.swift */,
+				003327591FDAFA2D0058426B /* Group.swift */,
+				003327571FDAFA160058426B /* Event.swift */,
+				0033275F1FDB1B9B0058426B /* Rsvp.swift */,
+			);
+			path = Meetup;
+			sourceTree = "<group>";
+		};
+		008E91461FDD2D1F00E6F9AA /* ImageCache */ = {
+			isa = PBXGroup;
+			children = (
+				008E91431FDD2CD900E6F9AA /* ImageCacheProvider.swift */,
+			);
+			path = ImageCache;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -282,6 +295,10 @@
 			files = (
 				003327481FDAC20E0058426B /* LoadableFromStoryboard.swift in Sources */,
 				003327621FDB310A0058426B /* DispatchQueue.swift in Sources */,
+				008E913C1FDD00F200E6F9AA /* MeetupProvider.swift in Sources */,
+				008E91421FDD123400E6F9AA /* URL.swift in Sources */,
+				008E91481FDD2D3100E6F9AA /* MeetupSchedule.swift in Sources */,
+				0003A4E81FDD446900DA02BE /* TabCoordinator.swift in Sources */,
 				0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */,
 				003327521FDAE2190058426B /* GroupHeaderCell.swift in Sources */,
 				0033273C1FDABEDD0058426B /* Providers.swift in Sources */,
@@ -291,7 +308,10 @@
 				003327211FDABBF10058426B /* AppDelegate.swift in Sources */,
 				0033275A1FDAFA2D0058426B /* Group.swift in Sources */,
 				003327561FDAEEAB0058426B /* BorderedView.swift in Sources */,
+				008E91441FDD2CD900E6F9AA /* ImageCacheProvider.swift in Sources */,
 				0033275C1FDAFAD40058426B /* EventsViewData.swift in Sources */,
+				008E91401FDD027300E6F9AA /* Double.swift in Sources */,
+				008E913E1FDD017000E6F9AA /* AsyncResult.swift in Sources */,
 				003327601FDB1B9B0058426B /* Rsvp.swift in Sources */,
 				0033273F1FDAC0800058426B /* SecondTabCoordinator.swift in Sources */,
 				003327361FDABE060058426B /* FirstTabCoordinator.swift in Sources */,

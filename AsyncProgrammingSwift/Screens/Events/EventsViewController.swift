@@ -1,5 +1,15 @@
 import UIKit
 
+// MARK: - EventsViewControllerDelegate
+
+protocol EventsViewControllerDelegate: AnyObject {
+    func willDisplayRow(forGroupId groupId: String)
+    func willDisplayRow(forEventId eventId: String)
+    
+    func didEndDisplayingRow(forGroupId groupId: String)
+    func didEndDisplayingRow(forEventId eventId: String)
+}
+
 // MARK: - EventsViewController
 
 class EventsViewController: UIViewController {
@@ -9,6 +19,8 @@ class EventsViewController: UIViewController {
     @IBOutlet private var tableView: UITableView!
     
     // MARK: - Stored Properties
+    
+    weak var delegate: EventsViewControllerDelegate?
     
     enum Table {
         enum Section {
@@ -32,6 +44,7 @@ class EventsViewController: UIViewController {
         super.viewDidLoad()
         
         setupViews()
+        tableView.prefetchDataSource = nil
     }
     
     // MARK: - Setup
@@ -63,22 +76,32 @@ class EventsViewController: UIViewController {
                 return
             }
 
-            if let groupHeaderCell = tableView.cellForRow(at: indexPath) as? GroupHeaderCell {
-                groupHeaderCell.update(with: groupHeaderCellData)
+            guard let groupHeaderCell = tableView.cellForRow(at: indexPath) as? GroupHeaderCell else {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+                return
             }
+            
+            groupHeaderCell.update(with: groupHeaderCellData)
+            
         case .eventRow(let eventCellData):
             guard let indexPath = indexPath(of: eventCellData) else {
                 tableView.reloadData()
                 return
             }
             
-            if let eventCell = tableView.cellForRow(at: indexPath) as? EventCell {
-                eventCell.update(with: eventCellData)
+            guard let eventCell = tableView.cellForRow(at: indexPath) as? EventCell else {
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+                return
             }
+            
+            eventCell.update(with: eventCellData)
+            
         case .noRows:
             break
         }
     }
+    
+    // MARK: - IndexPath Lookup
     
     private func indexPathOfGroupHeader() -> IndexPath? {
         guard let section = tableSections.index(where: {
@@ -92,23 +115,24 @@ class EventsViewController: UIViewController {
     }
     
     private func indexPath(of eventCellData: EventCellData) -> IndexPath? {
-        guard let section = tableSections.index(where: {
-            switch $0 {
-            case .upcomingEvents, .pastEvents: return true
-            default: return false
+        for (sectionIndex, tableSection) in tableSections.enumerated() {
+            switch tableSection {
+            case .groupHeader:
+                break
+                
+            case .upcomingEvents(let rows):
+                if let rowIndex = rows.index(where: { $0.eventId == eventCellData.eventId }) {
+                    return IndexPath(row: rowIndex, section: sectionIndex)
+                }
+                
+            case .pastEvents(let rows):
+                if let rowIndex = rows.index(where: { $0.eventId == eventCellData.eventId }) {
+                    return IndexPath(row: rowIndex, section: sectionIndex)
+                }
             }
-        }) else { return nil }
-        
-        switch tableSections[section] {
-        case .upcomingEvents(let rows), .pastEvents(let rows):
-            guard let row = rows.index(where: { $0.eventId == eventCellData.eventId }) else {
-                return nil
-            }
-            return IndexPath(row: row, section: section)
-        
-        default:
-            return nil
         }
+        
+        return nil
     }
 }
 
@@ -171,6 +195,36 @@ extension EventsViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 
 extension EventsViewController: UITableViewDelegate {
+    func tableView(
+        _ tableView: UITableView,
+        willDisplay cell: UITableViewCell,
+        forRowAt indexPath: IndexPath)
+    {
+        print(type(of: self), #function, indexPath)
+        switch tableSections[indexPath.section] {
+        case .groupHeader(let groupHeaderCellData):
+            delegate?.willDisplayRow(forGroupId: groupHeaderCellData.groupId)
+            
+        case .upcomingEvents(let rows), .pastEvents(let rows):
+            let eventCellData = rows[indexPath.row]
+            delegate?.willDisplayRow(forEventId: eventCellData.eventId)
+        }
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        didEndDisplaying cell: UITableViewCell,
+        forRowAt indexPath: IndexPath)
+    {
+        switch tableSections[indexPath.section] {
+        case .groupHeader(let groupHeaderCellData):
+            delegate?.didEndDisplayingRow(forGroupId: groupHeaderCellData.groupId)
+            
+        case .upcomingEvents(let rows), .pastEvents(let rows):
+            let eventCellData = rows[indexPath.row]
+            delegate?.didEndDisplayingRow(forEventId: eventCellData.eventId)
+        }
+    }
 }
 
 // MARK: - LoadableFromStoryboard

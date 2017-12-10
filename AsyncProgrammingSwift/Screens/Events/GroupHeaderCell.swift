@@ -6,6 +6,8 @@ struct GroupHeaderCellData {
     
     // MARK: - Stored Properties
     
+    let groupId: String
+    
     let groupImage: UIImage?
     let groupNameText: String
     
@@ -18,6 +20,8 @@ struct GroupHeaderCellData {
     // MARK: - Lifecycle
     
     init(group: Group, groupImage: UIImage?) {
+        self.groupId = group.id
+        
         self.groupImage = groupImage
         self.groupNameText = group.name
         

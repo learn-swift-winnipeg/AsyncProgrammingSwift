@@ -31,7 +31,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="298"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FirstUI Tab Icon" translatesAutoresizingMaskIntoConstraints="NO" id="HiO-ZE-DXO" userLabel="Group ImageView">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="FirstUI Tab Icon" translatesAutoresizingMaskIntoConstraints="NO" id="HiO-ZE-DXO" userLabel="Group ImageView">
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="140.66666666666666"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="HiO-ZE-DXO" secondAttribute="height" multiplier="16:6" id="GtU-CM-5eO"/>
