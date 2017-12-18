@@ -85,7 +85,7 @@ class AppCoordinator {
             fourthEventsViewController
         ], animated: false)
         
-        tabBarController.selectedIndex = 1
+        tabBarController.selectedIndex = 3
         
         
         // Set the tab bar controller as the rootViewController of the main application window.

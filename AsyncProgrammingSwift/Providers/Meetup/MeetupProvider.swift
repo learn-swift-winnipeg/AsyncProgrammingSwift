@@ -34,60 +34,19 @@ class TestingMeetupProvider: MeetupProvider {
             memberCount: 2
         )
         
+        let eventsWithRsvps = (1...100).map({ _ in
+            return MeetupSchedule.EventWithRsvps(
+                event: .random,
+                rsvps: (5...10).map({ _ in .random })
+            )
+        })
+        
         let meetupSchedule = MeetupSchedule(
             group: group,
-            eventsWithRsvps: [
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random, .random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random]
-                ),
-                MeetupSchedule.EventWithRsvps(
-                    event: .random,
-                    rsvps: [.random, .random, .random, .random, .random, .random, .random]
-                ),
-            ])
+            eventsWithRsvps: eventsWithRsvps
+        )
         
-        resultQueue.asyncAfter(seconds: .random(lower: minFetchDelay, upper: maxFetchDelay)) {
+        resultQueue.asyncAfter(seconds: 0.0) {
             resultHandler( .success(meetupSchedule) )
         }
     }

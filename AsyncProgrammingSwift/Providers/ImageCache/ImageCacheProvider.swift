@@ -24,7 +24,7 @@ class TestingImageCacheProvider: ImageCacheProvider {
     private var urlsCurrentlyBeingFetched: Set<URL> = []
     
     private var minFetchDelay: TimeInterval = 1.0
-    private var maxFetchDelay: TimeInterval = 2.0
+    private var maxFetchDelay: TimeInterval = 3.0
     
     private let images: [UIImage] = [
         #imageLiteral(resourceName: "FirstUI Tab Icon"), #imageLiteral(resourceName: "SecondUI Tab Icon"), #imageLiteral(resourceName: "ThirdUI Tab Icon")
