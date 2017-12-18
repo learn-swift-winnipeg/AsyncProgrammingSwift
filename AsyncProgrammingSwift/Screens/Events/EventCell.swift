@@ -48,7 +48,11 @@ struct EventCellData {
 class EventCell: UITableViewCell, ImageUpdateable {
     var imageProvider: ImageProvider? = nil
     
-    var updateableImageViews: [UpdateableImageView] = []
+    var updateableImageViews: [UpdateableImageView] {
+        return rsvpIconCollectionView.visibleCells
+            .flatMap({ $0 as? ImageUpdateable })
+            .flatMap({ $0.updateableImageViews })
+    }
     
     func imageDataUpdated(for url: URL) {
         rsvpIconCollectionView.visibleCells
@@ -105,6 +109,7 @@ class EventCell: UITableViewCell, ImageUpdateable {
         self.rsvps = viewData.rsvpIconCellData
         
         self.rsvpIconCollectionView.reloadData()
+        self.rsvpIconCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: false)
     }
 }
 

@@ -10,10 +10,10 @@ class SecondTabCoordinator: TabCoordinator {
     let eventsViewController: EventsViewController
     var meetupSchedule: MeetupSchedule?
     
-    private var imageCacheUpdatingQueue = DispatchQueue(
+    private let imageCacheUpdatingQueue = DispatchQueue(
         label: "SecondTabCoordinator.imageCacheUpdatingQueue"
     )
-    private var urlsCurrentlyBeingFetched: Set<URL> = []
+    private var urlsOfImagesCurrentlyBeingUpdated: Set<URL> = []
     
     // MARK: - Lifecycle
     
@@ -44,12 +44,12 @@ extension SecondTabCoordinator: ImageProvider {
         }
         
         // Make sure image isn't already being fetched or we'll be duplicating network requests and loading work. The views will be notified by the original fetch request when the image data is available.
-        guard urlsCurrentlyBeingFetched.contains(url) == false else {
+        guard urlsOfImagesCurrentlyBeingUpdated.contains(url) == false else {
             return nil
         }
         
         // Mark that we're starting the fetch for this url.
-        self.urlsCurrentlyBeingFetched.insert(url)
+        self.urlsOfImagesCurrentlyBeingUpdated.insert(url)
         
         // Fetch image and update cache asynchronously, but serially, on background queue using GCD.
         imageCacheUpdatingQueue.async {
@@ -61,7 +61,7 @@ extension SecondTabCoordinator: ImageProvider {
                 DispatchQueue.main.async {
                     
                     // Remove so the cache can be updated again at a later date if required.
-                    self.urlsCurrentlyBeingFetched.remove(url)
+                    self.urlsOfImagesCurrentlyBeingUpdated.remove(url)
                     
                     // Notify interested views that the cache has been updated for this url.
                     self.eventsViewController.imageDataUpdated(for: url)

@@ -3,11 +3,7 @@ import UIKit
 // MARK: - EventsViewControllerDelegate
 
 protocol EventsViewControllerDelegate: ImageProvider {
-    func willDisplayRow(forGroupId groupId: String)
-    func willDisplayRow(forEventId eventId: String)
-    
-    func didEndDisplayingRow(forGroupId groupId: String)
-    func didEndDisplayingRow(forEventId eventId: String)
+    func didUpdateURLsForVisibleImages(urls: [URL])
 }
 
 // MARK: - EventsViewController
@@ -69,35 +65,6 @@ class EventsViewController: UIViewController {
         tableView.visibleCells
             .flatMap({ $0 as? ImageUpdateable })
             .forEach({ $0.imageDataUpdated(for: url) })
-    }
-    
-    // MARK: - IndexPath Lookup
-    
-    private func indexPathOfGroupHeader() -> IndexPath? {
-        guard let section = tableSections.index(where: {
-            switch $0 {
-            case .groupHeader: return true
-            default: return false
-            }
-        }) else { return nil }
-        
-        return IndexPath(row: 0, section: section)
-    }
-    
-    private func indexPath(of eventCellData: EventCellData) -> IndexPath? {
-        for (sectionIndex, tableSection) in tableSections.enumerated() {
-            switch tableSection {
-            case .groupHeader:
-                return nil
-                
-            case .events(let rows):
-                if let rowIndex = rows.index(where: { $0.eventId == eventCellData.eventId }) {
-                    return IndexPath(row: rowIndex, section: sectionIndex)
-                }
-            }
-        }
-        
-        return nil
     }
 }
 
@@ -164,16 +131,15 @@ extension EventsViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath)
     {
-        // Ask delegate for imageData which may return nil if image not yet available.
+        // Something just went out of view, report back to delegate all urls for images which are still visible.
+        let urlsForVisibleUpdateableImageViews = tableView.visibleCells
+            .flatMap({ $0 as? ImageUpdateable })
+            .flatMap({ $0.updateableImageViews })
+            .flatMap({ $0.url })
         
-        switch tableSections[indexPath.section] {
-        case .groupHeader(let groupHeaderCellData):
-            delegate?.willDisplayRow(forGroupId: groupHeaderCellData.groupId)
-            
-        case .events(let rows):
-            let eventCellData = rows[indexPath.row]
-            delegate?.willDisplayRow(forEventId: eventCellData.eventId)
-        }
+        delegate?.didUpdateURLsForVisibleImages(
+            urls: urlsForVisibleUpdateableImageViews
+        )
     }
     
     func tableView(
@@ -181,14 +147,15 @@ extension EventsViewController: UITableViewDelegate {
         didEndDisplaying cell: UITableViewCell,
         forRowAt indexPath: IndexPath)
     {
-        switch tableSections[indexPath.section] {
-        case .groupHeader(let groupHeaderCellData):
-            delegate?.didEndDisplayingRow(forGroupId: groupHeaderCellData.groupId)
-            
-        case .events(let rows):
-            let eventCellData = rows[indexPath.row]
-            delegate?.didEndDisplayingRow(forEventId: eventCellData.eventId)
-        }
+        // Something just went out of view, report back to delegate all urls for images which are still visible.
+        let urlsForVisibleUpdateableImageViews = tableView.visibleCells
+            .flatMap({ $0 as? ImageUpdateable })
+            .flatMap({ $0.updateableImageViews })
+            .flatMap({ $0.url })
+        
+        delegate?.didUpdateURLsForVisibleImages(
+            urls: urlsForVisibleUpdateableImageViews
+        )
     }
 }
 

@@ -10,7 +10,7 @@ class ThirdTabCoordinator: TabCoordinator {
     let eventsViewController: EventsViewController
     var meetupSchedule: MeetupSchedule?
     
-    private var urlsCurrentlyBeingFetched: Set<URL> = []
+    private var urlsOfImagesCurrentlyBeingUpdated: Set<URL> = []
     
     // MARK: - Lifecycle
     
@@ -41,14 +41,14 @@ extension ThirdTabCoordinator: ImageProvider {
         }
         
         // Make sure image isn't already being fetched or we'll be duplicating network requests and loading work. The views will be notified by the original fetch request when the image data is available.
-        guard urlsCurrentlyBeingFetched.contains(url) == false else {
+        guard urlsOfImagesCurrentlyBeingUpdated.contains(url) == false else {
             return nil
         }
         
         // Mark that we're starting the fetch for this url.
-        self.urlsCurrentlyBeingFetched.insert(url)
+        self.urlsOfImagesCurrentlyBeingUpdated.insert(url)
         
-        // Fetch image and update cache asynchronously, and in parallel (concurrent), on background queues using GCD.
+        // Fetch image and update cache asynchronously, and in parallel (concurrently), on background queues using GCD.
         DispatchQueue.global().async {
             do {
                 // Note this call is blocking (synchronous) but it doesn't freeze the UI because we're not on the main queue right now, we're on a background queue.
@@ -58,7 +58,7 @@ extension ThirdTabCoordinator: ImageProvider {
                 DispatchQueue.main.async {
                     
                     // Remove so the cache can be updated again at a later date if required.
-                    self.urlsCurrentlyBeingFetched.remove(url)
+                    self.urlsOfImagesCurrentlyBeingUpdated.remove(url)
                     
                     // Notify interested views that the cache has been updated for this url.
                     self.eventsViewController.imageDataUpdated(for: url)
@@ -72,5 +72,4 @@ extension ThirdTabCoordinator: ImageProvider {
         // Return nil here because we have to return something, we don't yet have the image data, and the interested view will be notified later when the image data is available.
         return nil
     }
-
 }

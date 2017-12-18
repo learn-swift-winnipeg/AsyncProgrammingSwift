@@ -37,7 +37,7 @@ class TestingMeetupProvider: MeetupProvider {
         let eventsWithRsvps = (1...100).map({ _ in
             return MeetupSchedule.EventWithRsvps(
                 event: .random,
-                rsvps: (5...10).map({ _ in .random })
+                rsvps: (0...Int.random(lower: 5, upper: 10)).map({ _ in .random })
             )
         })
         

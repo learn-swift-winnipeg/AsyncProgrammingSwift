@@ -59,19 +59,7 @@ extension TabCoordinator {
 // MARK: - EventsViewControllerDelegate
 
 extension TabCoordinator {
-    func willDisplayRow(forGroupId groupId: String) {
-        // TODO: Implement.
-    }
-    
-    func willDisplayRow(forEventId eventId: String) {
-        // TODO: Implement.
-    }
-    
-    func didEndDisplayingRow(forGroupId groupId: String) {
-        // TODO: Implement.
-    }
-    
-    func didEndDisplayingRow(forEventId eventId: String) {
-        // TODO: Implement.
+    func didUpdateURLsForVisibleImages(urls: [URL]) {
+        // TODO: Implement in conforming types when needed.
     }
 }
