@@ -3,20 +3,38 @@ import UIKit
 // MARK: - RsvpIconCellData
 
 struct RsvpIconCellData {
-    let rsvpImage: UIImage?
+    let imageURL: URL
+    let imageProvider: ImageProvider
+    
+    init(rsvp: Rsvp, imageProvider: ImageProvider) {
+        self.imageURL = rsvp.memberThumbnailURL
+        self.imageProvider = imageProvider
+    }
 }
 
 // MARK: - RsvpIconCell
 
-class RsvpIconCell: UICollectionViewCell {
+class RsvpIconCell: UICollectionViewCell, ImageUpdateable {
     
     // MARK: - Outlets
     
-    @IBOutlet var rsvpImageView: UIImageView!
+    @IBOutlet var rsvpImageView: UpdateableImageView!
+    
+    // MARK: - ImageUpdateable
+    
+    private(set) weak var imageProvider: ImageProvider?
+    var updateableImageViews: [UpdateableImageView] {
+        return [rsvpImageView]
+    }
     
     // MARK: - Update
     
     func update(with viewData: RsvpIconCellData) {
-        rsvpImageView.image = viewData.rsvpImage
+        imageProvider = viewData.imageProvider
+        
+        rsvpImageView.url = viewData.imageURL
+        rsvpImageView.image = nil
+        
+        attemptToLoadImageDataFromDelegate()
     }
 }

@@ -8,7 +8,7 @@ struct GroupHeaderCellData {
     
     let groupId: String
     
-    let groupImage: UIImage?
+    let groupImageURL: URL
     let groupNameText: String
     
     let locationDescriptionText: String
@@ -17,12 +17,14 @@ struct GroupHeaderCellData {
     let memberCountDescriptionText: String
     let memberCountValueText: String
     
+    let imageProvider: ImageProvider
+    
     // MARK: - Lifecycle
     
-    init(group: Group, groupImage: UIImage?) {
+    init(group: Group, imageProvider: ImageProvider) {
         self.groupId = group.id
         
-        self.groupImage = groupImage
+        self.groupImageURL = group.keyPhotoURL
         self.groupNameText = group.name
         
         self.locationDescriptionText = "Location"
@@ -30,16 +32,18 @@ struct GroupHeaderCellData {
         
         self.memberCountDescriptionText = "Members"
         self.memberCountValueText = String(group.memberCount)
+        
+        self.imageProvider = imageProvider
     }
 }
 
 // MARK: - GroupHeaderCell
 
-class GroupHeaderCell: UITableViewCell {
+class GroupHeaderCell: UITableViewCell, ImageUpdateable {
     
     // MARK: - Outlets
     
-    @IBOutlet var groupImageView: UIImageView!
+    @IBOutlet var groupImageView: UpdateableImageView!
     @IBOutlet var groupNameLabel: UILabel!
     
     @IBOutlet var locationDescriptionLabel: UILabel!
@@ -48,10 +52,21 @@ class GroupHeaderCell: UITableViewCell {
     @IBOutlet var memberCountDescriptionLabel: UILabel!
     @IBOutlet var memberCountValueLabel: UILabel!
     
+    // MARK: - ImageUpdateable
+    
+    private(set) weak var imageProvider: ImageProvider?
+    
+    var updateableImageViews: [UpdateableImageView] {
+        return [groupImageView]
+    }
+    
     // MARK: - Update
     
     func update(with viewData: GroupHeaderCellData) {
-        groupImageView.image = viewData.groupImage
+        imageProvider = viewData.imageProvider
+        
+        groupImageView.url = viewData.groupImageURL
+        groupImageView.image = nil
         groupNameLabel.text = viewData.groupNameText
         
         locationDescriptionLabel.text = viewData.locationDescriptionText
@@ -59,5 +74,7 @@ class GroupHeaderCell: UITableViewCell {
         
         memberCountDescriptionLabel.text = viewData.memberCountDescriptionText
         memberCountValueLabel.text = viewData.memberCountValueText
+        
+        attemptToLoadImageDataFromDelegate()
     }
 }

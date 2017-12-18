@@ -7,7 +7,7 @@ class AppCoordinator {
     // MARK: - Stored Properties
     
     private let mainApplicationWindow: UIWindow
-    private let providers = Providers.forCurrentConfiguration()
+//    private let providers = Providers.forCurrentConfiguration()
     
     // MARK: - Child Coordinators
     
@@ -33,7 +33,7 @@ class AppCoordinator {
             tag: 1
         )
         firstTabCoordinator = FirstTabCoordinator(
-            providers: providers,
+            providers: Providers.forCurrentConfiguration(),
             eventsViewController: firstEventsViewController
         )
         firstTabCoordinator?.start()
@@ -45,7 +45,7 @@ class AppCoordinator {
             tag: 2
         )
         secondTabCoordinator = SecondTabCoordinator(
-            providers: providers,
+            providers: Providers.forCurrentConfiguration(),
             eventsViewController: secondEventsViewController
         )
         secondTabCoordinator?.start()
@@ -57,7 +57,7 @@ class AppCoordinator {
             tag: 3
         )
         thirdTabCoordinator = ThirdTabCoordinator(
-            providers: providers,
+            providers: Providers.forCurrentConfiguration(),
             eventsViewController: thirdEventsViewController
         )
         thirdTabCoordinator?.start()
@@ -69,7 +69,7 @@ class AppCoordinator {
             tag: 4
         )
         fourthTabCoordinator = FourthTabCoordinator(
-            providers: providers,
+            providers: Providers.forCurrentConfiguration(),
             eventsViewController: fourthEventsViewController
         )
         fourthTabCoordinator?.start()
@@ -84,6 +84,8 @@ class AppCoordinator {
             thirdEventsViewController,
             fourthEventsViewController
         ], animated: false)
+        
+        tabBarController.selectedIndex = 1
         
         
         // Set the tab bar controller as the rootViewController of the main application window.

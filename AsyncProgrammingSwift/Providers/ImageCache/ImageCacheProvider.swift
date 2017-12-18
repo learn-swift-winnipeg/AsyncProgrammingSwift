@@ -1,101 +1,109 @@
 import UIKit
 
+// MARK: - ImageCacheError
+
 enum ImageCacheError: Error {
-    case fetchAlreadyPerformed
+    case failedToCreateImageFromData(for: URL)
+    case fetchAlreadyInProgress(for: URL)
 }
 
+// MARK: - ImageCacheProvider
+
 protocol ImageCacheProvider {
-    var imageCache: [URL: UIImage] { get }
-    
-    func fetchAndCacheImageSynchronously(from url: URL) throws
-    
-    func fetchAndCacheImageAsynchronously(
-        from url: URL,
-        resultQueue: DispatchQueue,
-        resultHandler: @escaping (AsyncResult<Void>) -> Void
-    )
+    func cachedImage(for url: URL) -> UIImage?
+    func updateCacheSynchronously(for url: URL) throws
 }
+
+// MARK: - TestingImageCacheProvider
 
 class TestingImageCacheProvider: ImageCacheProvider {
     
     // MARK: - Stored Properties
     
-    private var imageUrlsAlreadyFetched: Set<URL> = []
     private(set) var imageCache: [URL: UIImage] = [:]
+    private var urlsCurrentlyBeingFetched: Set<URL> = []
     
-    // MARK: - Fetching
+    private var minFetchDelay: TimeInterval = 1.0
+    private var maxFetchDelay: TimeInterval = 2.0
     
-    func fetchAndCacheImageSynchronously(from url: URL) throws {
-        guard imageUrlsAlreadyFetched.contains(url) == false else {
-            throw ImageCacheError.fetchAlreadyPerformed
-        }
-        
-        imageUrlsAlreadyFetched.insert(url)
-        
-        do {
-            let imageData = try Data(contentsOf: url, options: [])
-            let image = UIImage(data: imageData)
-            self.imageCache[url] = image
-        } catch {
-            imageUrlsAlreadyFetched.remove(url)
-            throw error
-        }
+    private let images: [UIImage] = [
+        #imageLiteral(resourceName: "FirstUI Tab Icon"), #imageLiteral(resourceName: "SecondUI Tab Icon"), #imageLiteral(resourceName: "ThirdUI Tab Icon")
+    ]
+    
+    // MARK: - Cached Image
+    
+    func cachedImage(for url: URL) -> UIImage? {
+        return imageCache[url]
     }
     
-    func fetchAndCacheImageAsynchronously(
-        from url: URL,
-        resultQueue: DispatchQueue,
-        resultHandler: @escaping (AsyncResult<Void>) -> Void)
-    {
-        guard imageUrlsAlreadyFetched.contains(url) == false else {
-            resultQueue.async {
-                let error = ImageCacheError.fetchAlreadyPerformed
-                resultHandler( .failure(error) )
-            }
-            
-            return
-        }
-        
-        imageUrlsAlreadyFetched.insert(url)
-        
-        DispatchQueue.global().async {
-            do {
-                let imageData = try Data(contentsOf: url, options: [])
-                let image = UIImage(data: imageData)
-                
-                DispatchQueue.main.async {
-                    self.imageCache[url] = image
-                    
-                    resultQueue.async { resultHandler( .success(()) ) }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    self.imageUrlsAlreadyFetched.remove(url)
-                    resultQueue.async { resultHandler( .failure(error) ) }
-                }
-            }
-        }
+    func updateCacheSynchronously(for url: URL) throws {
+        let fetchDelay = TimeInterval.random(lower: minFetchDelay, upper: maxFetchDelay)
+        usleep(UInt32(fetchDelay * 1_000_000))
+        self.imageCache[url] = self.images.random!
     }
 }
+
+// MARK: - ProductionImageCacheProvider
 
 class ProductionImageCacheProvider: ImageCacheProvider {
     
     // MARK: - Stored Properties
     
     private(set) var imageCache: [URL: UIImage] = [:]
+    private var urlsCurrentlyBeingFetched: Set<URL> = []
+    
+    // MARK: - Cached Image
+    
+    func cachedImage(for url: URL) -> UIImage? {
+        return imageCache[url]
+    }
+    
+    func updateCacheSynchronously(for url: URL) throws {
+        let fetchedImage = try fetchRemoteImageSynchronously(for: url)
+        self.imageCache[url] = fetchedImage
+    }
     
     // MARK: - Fetching
     
-    func fetchAndCacheImageSynchronously(from url: URL) throws {
-        // TODO: Implement.
+    func fetchImageAsynchronously(
+        for url: URL,
+        resultQueue: DispatchQueue,
+        resultHandler: @escaping (AsyncResult<UIImage>) -> Void)
+    {
+        DispatchQueue.global().async {
+            // Return cached image if available.
+            if let cachedImage = self.imageCache[url] {
+                resultQueue.async { resultHandler( .success(cachedImage) ) }
+                return
+            }
+            
+            // Make sure image isn't already being fetched or we'll be duplicating network requests and loading work.
+            guard self.urlsCurrentlyBeingFetched.contains(url) == false else {
+                let error = ImageCacheError.fetchAlreadyInProgress(for: url)
+                resultQueue.async { resultHandler( .failure(error) ) }
+                return
+            }
+            
+            do {
+                self.urlsCurrentlyBeingFetched.insert(url)
+                let fetchedImage = try self.fetchRemoteImageSynchronously(for: url)
+                
+                DispatchQueue.main.async {
+                    self.imageCache[url] = fetchedImage
+                    self.urlsCurrentlyBeingFetched.remove(url)
+                    resultQueue.async { resultHandler( .success(fetchedImage) ) }
+                }
+            } catch {
+                resultQueue.async { resultHandler( .failure(error) ) }
+            }
+        }
     }
     
-    func fetchAndCacheImageAsynchronously(
-        from url: URL,
-        resultQueue: DispatchQueue,
-        resultHandler: @escaping (AsyncResult<Void>) -> Void)
-    {
-        // TODO: Implement.
+    private func fetchRemoteImageSynchronously(for url: URL) throws -> UIImage {
+        let imageData = try Data(contentsOf: url, options: [])
+        guard let image = UIImage(data: imageData) else {
+            throw ImageCacheError.failedToCreateImageFromData(for: url)
+        }
+        return image
     }
 }
-

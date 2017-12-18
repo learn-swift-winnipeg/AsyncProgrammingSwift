@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0003A4E81FDD446900DA02BE /* TabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0003A4E71FDD446900DA02BE /* TabCoordinator.swift */; };
+		001FD02F1FE706B8005C63C5 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FD02E1FE706B8005C63C5 /* Array.swift */; };
+		001FD0311FE707A8005C63C5 /* Int.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FD0301FE707A8005C63C5 /* Int.swift */; };
+		001FD0331FE70F03005C63C5 /* Bool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001FD0321FE70F03005C63C5 /* Bool.swift */; };
 		003327211FDABBF10058426B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327201FDABBF10058426B /* AppDelegate.swift */; };
 		003327281FDABBF10058426B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 003327271FDABBF10058426B /* Assets.xcassets */; };
 		0033272B1FDABBF10058426B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 003327291FDABBF10058426B /* LaunchScreen.storyboard */; };
@@ -35,10 +38,15 @@
 		008E91421FDD123400E6F9AA /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E91411FDD123400E6F9AA /* URL.swift */; };
 		008E91441FDD2CD900E6F9AA /* ImageCacheProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E91431FDD2CD900E6F9AA /* ImageCacheProvider.swift */; };
 		008E91481FDD2D3100E6F9AA /* MeetupSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E91471FDD2D3100E6F9AA /* MeetupSchedule.swift */; };
+		00AD39461FDD81E9001B730A /* ImageUpdateable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD39451FDD81E9001B730A /* ImageUpdateable.swift */; };
+		00AD39481FDD868C001B730A /* UpdateableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00AD39471FDD868C001B730A /* UpdateableImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0003A4E71FDD446900DA02BE /* TabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabCoordinator.swift; sourceTree = "<group>"; };
+		001FD02E1FE706B8005C63C5 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		001FD0301FE707A8005C63C5 /* Int.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Int.swift; sourceTree = "<group>"; };
+		001FD0321FE70F03005C63C5 /* Bool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bool.swift; sourceTree = "<group>"; };
 		0033271D1FDABBF10058426B /* AsyncProgrammingSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AsyncProgrammingSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		003327201FDABBF10058426B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		003327271FDABBF10058426B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -68,6 +76,8 @@
 		008E91411FDD123400E6F9AA /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		008E91431FDD2CD900E6F9AA /* ImageCacheProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheProvider.swift; sourceTree = "<group>"; };
 		008E91471FDD2D3100E6F9AA /* MeetupSchedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetupSchedule.swift; sourceTree = "<group>"; };
+		00AD39451FDD81E9001B730A /* ImageUpdateable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUpdateable.swift; sourceTree = "<group>"; };
+		00AD39471FDD868C001B730A /* UpdateableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateableImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +184,8 @@
 				003327471FDAC20E0058426B /* LoadableFromStoryboard.swift */,
 				003327551FDAEEAB0058426B /* BorderedView.swift */,
 				008E913D1FDD017000E6F9AA /* AsyncResult.swift */,
+				00AD39451FDD81E9001B730A /* ImageUpdateable.swift */,
+				00AD39471FDD868C001B730A /* UpdateableImageView.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -196,7 +208,10 @@
 			children = (
 				003327611FDB310A0058426B /* DispatchQueue.swift */,
 				008E913F1FDD027300E6F9AA /* Double.swift */,
+				001FD0301FE707A8005C63C5 /* Int.swift */,
 				008E91411FDD123400E6F9AA /* URL.swift */,
+				001FD02E1FE706B8005C63C5 /* Array.swift */,
+				001FD0321FE70F03005C63C5 /* Bool.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -296,16 +311,19 @@
 				003327481FDAC20E0058426B /* LoadableFromStoryboard.swift in Sources */,
 				003327621FDB310A0058426B /* DispatchQueue.swift in Sources */,
 				008E913C1FDD00F200E6F9AA /* MeetupProvider.swift in Sources */,
+				001FD0311FE707A8005C63C5 /* Int.swift in Sources */,
 				008E91421FDD123400E6F9AA /* URL.swift in Sources */,
 				008E91481FDD2D3100E6F9AA /* MeetupSchedule.swift in Sources */,
 				0003A4E81FDD446900DA02BE /* TabCoordinator.swift in Sources */,
 				0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */,
 				003327521FDAE2190058426B /* GroupHeaderCell.swift in Sources */,
 				0033273C1FDABEDD0058426B /* Providers.swift in Sources */,
+				001FD02F1FE706B8005C63C5 /* Array.swift in Sources */,
 				003327341FDABC6D0058426B /* AppCoordinator.swift in Sources */,
 				003327451FDAC0C20058426B /* FourthTabCoordinator.swift in Sources */,
 				003327421FDAC0A60058426B /* ThirdTabCoordinator.swift in Sources */,
 				003327211FDABBF10058426B /* AppDelegate.swift in Sources */,
+				00AD39481FDD868C001B730A /* UpdateableImageView.swift in Sources */,
 				0033275A1FDAFA2D0058426B /* Group.swift in Sources */,
 				003327561FDAEEAB0058426B /* BorderedView.swift in Sources */,
 				008E91441FDD2CD900E6F9AA /* ImageCacheProvider.swift in Sources */,
@@ -313,8 +331,10 @@
 				008E91401FDD027300E6F9AA /* Double.swift in Sources */,
 				008E913E1FDD017000E6F9AA /* AsyncResult.swift in Sources */,
 				003327601FDB1B9B0058426B /* Rsvp.swift in Sources */,
+				001FD0331FE70F03005C63C5 /* Bool.swift in Sources */,
 				0033273F1FDAC0800058426B /* SecondTabCoordinator.swift in Sources */,
 				003327361FDABE060058426B /* FirstTabCoordinator.swift in Sources */,
+				00AD39461FDD81E9001B730A /* ImageUpdateable.swift in Sources */,
 				003327541FDAE89F0058426B /* EventCell.swift in Sources */,
 				0033274B1FDAC6600058426B /* EventsViewController.swift in Sources */,
 				003327581FDAFA160058426B /* Event.swift in Sources */,

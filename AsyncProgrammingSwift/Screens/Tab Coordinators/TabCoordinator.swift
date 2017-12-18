@@ -2,27 +2,21 @@ import UIKit
 
 // MARK: - TabCoordinator
 
-protocol TabCoordinator: AnyObject {
+protocol TabCoordinator: EventsViewControllerDelegate {
     var providers: Providers { get }
     var meetupSchedule: MeetupSchedule? { get set }
     var eventsViewController: EventsViewController { get }
 }
 
-// MARK: - RowUpdateOption
-
-enum RowUpdateOption {
-    case allRows
-    case groupHeaderRow
-    case eventRow(event: Event)
-    case noRows
-}
-
 // MARK: - Extension
 
 extension TabCoordinator {
+    
+    // MARK: - Fetch
+    
     func fetchMeetupScheduleAndUpdateUI() {
         providers.meetupProvider.fetchMeetupSchedule(
-            forGroupUrlname: "learn-swift-winnipeg",
+            forGroupURLname: "learn-swift-winnipeg",
             resultQueue: .main)
         { result in
             switch result {
@@ -32,70 +26,52 @@ extension TabCoordinator {
                 
             case .success(let meetupSchedule):
                 self.meetupSchedule = meetupSchedule
-                self.updateUI(rowUpdateOption: .allRows)
+                self.updateUI(reloadTableView: true)
             }
         }
     }
     
-    func updateUI(rowUpdateOption: RowUpdateOption) {
+    // MARK: - Update
+    
+    func updateUI(reloadTableView: Bool) {
         guard let meetupSchedule = self.meetupSchedule else { return }
-        let imageCache = providers.imageCacheProvider.imageCache
         
-        let groupHeaderCellData = GroupHeaderCellData(
-            group: meetupSchedule.group,
-            groupImage: imageCache[meetupSchedule.group.keyPhotoUrl]
-        )
+        let groupHeaderCellData = GroupHeaderCellData(group: meetupSchedule.group, imageProvider: self)
         
-        let now = Date()
-        let upcomingEventsWithRsvps = meetupSchedule.eventsWithRsvps.filter({ $0.event.startTime > now })
-        let pastEventsWithRsvps = meetupSchedule.eventsWithRsvps.filter({ $0.event.startTime <= now })
-        
-        let upcomingEventCellData: [EventCellData] = upcomingEventsWithRsvps.map {
-            let rsvpIconCellData = $0.rsvps.map({ rsvp in
-                RsvpIconCellData(rsvpImage: imageCache[rsvp.memberThumbnailUrl])
-            })
+        let eventCellData: [EventCellData] = meetupSchedule.eventsWithRsvps.map {
+            let rsvpIconCellData = $0.rsvps.map({ RsvpIconCellData(rsvp: $0, imageProvider: self) })
             
-            return EventCellData(event: $0.event, rsvpIconCellData: rsvpIconCellData)
-        }
-        
-        let pastEventCellData: [EventCellData] = pastEventsWithRsvps.map {
-            let rsvpIconCellData = $0.rsvps.map({ rsvp in
-                RsvpIconCellData(rsvpImage: imageCache[rsvp.memberThumbnailUrl])
-            })
             return EventCellData(event: $0.event, rsvpIconCellData: rsvpIconCellData)
         }
         
         let eventsViewData = EventsViewData(
             groupHeaderCellData: groupHeaderCellData,
-            upcomingEventCellData: upcomingEventCellData,
-            pastEventCellData: pastEventCellData
+            eventCellData: eventCellData
         )
-        
-        let eventsVCRowUpdateOption: EventsViewController.Table.RowUpdateOption
-        
-        switch rowUpdateOption {
-        case .allRows:
-            eventsVCRowUpdateOption = .allRows
-            
-        case .groupHeaderRow:
-            eventsVCRowUpdateOption = .groupHeaderRow(groupHeaderCellData: groupHeaderCellData)
-            
-        case .eventRow(let event):
-            guard let eventCellData = upcomingEventCellData.first(where: { $0.eventId == event.id })
-                ?? pastEventCellData.first(where: { $0.eventId == event.id })
-                else {
-                    eventsVCRowUpdateOption = .allRows
-                    return
-            }
-            eventsVCRowUpdateOption = .eventRow(eventCellData: eventCellData)
-            
-        case .noRows:
-            eventsVCRowUpdateOption = .noRows
-        }
         
         self.eventsViewController.update(
             with: eventsViewData,
-            rowUpdateOption: eventsVCRowUpdateOption
+            reloadTableView: reloadTableView
         )
+    }
+}
+
+// MARK: - EventsViewControllerDelegate
+
+extension TabCoordinator {
+    func willDisplayRow(forGroupId groupId: String) {
+        // TODO: Implement.
+    }
+    
+    func willDisplayRow(forEventId eventId: String) {
+        // TODO: Implement.
+    }
+    
+    func didEndDisplayingRow(forGroupId groupId: String) {
+        // TODO: Implement.
+    }
+    
+    func didEndDisplayingRow(forEventId eventId: String) {
+        // TODO: Implement.
     }
 }

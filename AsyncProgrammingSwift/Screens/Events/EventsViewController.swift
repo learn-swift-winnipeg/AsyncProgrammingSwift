@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - EventsViewControllerDelegate
 
-protocol EventsViewControllerDelegate: AnyObject {
+protocol EventsViewControllerDelegate: ImageProvider {
     func willDisplayRow(forGroupId groupId: String)
     func willDisplayRow(forEventId eventId: String)
     
@@ -25,15 +25,7 @@ class EventsViewController: UIViewController {
     enum Table {
         enum Section {
             case groupHeader(groupHeaderCellData: GroupHeaderCellData)
-            case upcomingEvents(rows: [EventCellData])
-            case pastEvents(rows: [EventCellData])
-        }
-        
-        enum RowUpdateOption {
-            case allRows
-            case groupHeaderRow(groupHeaderCellData: GroupHeaderCellData)
-            case eventRow(eventCellData: EventCellData)
-            case noRows
+            case events(rows: [EventCellData])
         }
     }
     private var tableSections: [Table.Section] = []
@@ -63,42 +55,20 @@ class EventsViewController: UIViewController {
     
     // MARK: - Update
     
-    func update(with viewData: EventsViewData, rowUpdateOption: Table.RowUpdateOption) {
+    func update(with viewData: EventsViewData, reloadTableView: Bool) {
+        self.loadViewIfNeeded()
+        
         self.tableSections = viewData.tableSections
         
-        switch rowUpdateOption {
-        case .allRows:
+        if reloadTableView {
             tableView.reloadData()
-            
-        case .groupHeaderRow(let groupHeaderCellData):
-            guard let indexPath = indexPathOfGroupHeader() else {
-                tableView.reloadData()
-                return
-            }
-
-            guard let groupHeaderCell = tableView.cellForRow(at: indexPath) as? GroupHeaderCell else {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-                return
-            }
-            
-            groupHeaderCell.update(with: groupHeaderCellData)
-            
-        case .eventRow(let eventCellData):
-            guard let indexPath = indexPath(of: eventCellData) else {
-                tableView.reloadData()
-                return
-            }
-            
-            guard let eventCell = tableView.cellForRow(at: indexPath) as? EventCell else {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-                return
-            }
-            
-            eventCell.update(with: eventCellData)
-            
-        case .noRows:
-            break
         }
+    }
+    
+    func imageDataUpdated(for url: URL) {
+        tableView.visibleCells
+            .flatMap({ $0 as? ImageUpdateable })
+            .forEach({ $0.imageDataUpdated(for: url) })
     }
     
     // MARK: - IndexPath Lookup
@@ -118,14 +88,9 @@ class EventsViewController: UIViewController {
         for (sectionIndex, tableSection) in tableSections.enumerated() {
             switch tableSection {
             case .groupHeader:
-                break
+                return nil
                 
-            case .upcomingEvents(let rows):
-                if let rowIndex = rows.index(where: { $0.eventId == eventCellData.eventId }) {
-                    return IndexPath(row: rowIndex, section: sectionIndex)
-                }
-                
-            case .pastEvents(let rows):
+            case .events(let rows):
                 if let rowIndex = rows.index(where: { $0.eventId == eventCellData.eventId }) {
                     return IndexPath(row: rowIndex, section: sectionIndex)
                 }
@@ -153,15 +118,14 @@ extension EventsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch tableSections[section] {
         case .groupHeader: return nil
-        case .upcomingEvents: return "Upcoming"
-        case .pastEvents: return "Past"
+        case .events: return "Meetups"
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableSections[section] {
         case .groupHeader: return 1
-        case .upcomingEvents(let rows), .pastEvents(let rows): return rows.count
+        case .events(let rows): return rows.count
         }
     }
     
@@ -177,7 +141,7 @@ extension EventsViewController: UITableViewDataSource {
             
             return cell
             
-        case .upcomingEvents(let rows), .pastEvents(let rows):
+        case .events(let rows):
             let eventCellData = rows[indexPath.row]
             
             let cell = tableView.dequeueReusableCell(
@@ -200,12 +164,13 @@ extension EventsViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath)
     {
-        print(type(of: self), #function, indexPath)
+        // Ask delegate for imageData which may return nil if image not yet available.
+        
         switch tableSections[indexPath.section] {
         case .groupHeader(let groupHeaderCellData):
             delegate?.willDisplayRow(forGroupId: groupHeaderCellData.groupId)
             
-        case .upcomingEvents(let rows), .pastEvents(let rows):
+        case .events(let rows):
             let eventCellData = rows[indexPath.row]
             delegate?.willDisplayRow(forEventId: eventCellData.eventId)
         }
@@ -220,7 +185,7 @@ extension EventsViewController: UITableViewDelegate {
         case .groupHeader(let groupHeaderCellData):
             delegate?.didEndDisplayingRow(forGroupId: groupHeaderCellData.groupId)
             
-        case .upcomingEvents(let rows), .pastEvents(let rows):
+        case .events(let rows):
             let eventCellData = rows[indexPath.row]
             delegate?.didEndDisplayingRow(forEventId: eventCellData.eventId)
         }

@@ -26,7 +26,6 @@ struct Providers {
     // MARK: - Testing
     
     private static func makeTestingProviders() -> Providers {
-        // TODO: Implement.
         return Providers(
             meetupProvider: TestingMeetupProvider(),
             imageCacheProvider: TestingImageCacheProvider()
@@ -45,7 +44,6 @@ struct Providers {
     // MARK: - Release
     
     private static func makeReleaseProviders() -> Providers {
-        // TODO: Implement.
         return Providers(
             meetupProvider: ProductionMeetupProvider(),
             imageCacheProvider: ProductionImageCacheProvider()

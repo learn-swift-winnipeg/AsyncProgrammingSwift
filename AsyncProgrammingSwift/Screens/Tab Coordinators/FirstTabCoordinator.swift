@@ -8,7 +8,6 @@ class FirstTabCoordinator: TabCoordinator {
     
     let providers: Providers
     let eventsViewController: EventsViewController
-    
     var meetupSchedule: MeetupSchedule?
     
     // MARK: - Lifecycle
@@ -23,81 +22,30 @@ class FirstTabCoordinator: TabCoordinator {
     }
     
     func start() {
-        // TODO: Implement.
-        eventsViewController.loadViewIfNeeded()
-        
         fetchMeetupScheduleAndUpdateUI()
-    }
-    
-    // MARK: - Fetching
-    
-    private func fetchMeetupScheduleAndUpdateUI() {
-        providers.meetupProvider.fetchMeetupSchedule(
-            forGroupUrlname: "learn-swift-winnipeg",
-            resultQueue: .main)
-        { result in
-            switch result {
-            case .failure(let error):
-                // TODO: Handle error.
-                print(error)
-                
-            case .success(let meetupSchedule):
-                self.meetupSchedule = meetupSchedule
-                self.updateUI(rowUpdateOption: .allRows)
-            }
-        }
     }
 }
 
-// MARK: - EventsViewControllerDelegate
+// MARK: - ImageProvider
 
-extension FirstTabCoordinator: EventsViewControllerDelegate {
-    func willDisplayRow(forGroupId groupId: String) {
-        guard let meetupSchedule = self.meetupSchedule else { return }
-        let group = meetupSchedule.group
-        let imageUrl = group.keyPhotoUrl
-        
+extension FirstTabCoordinator: ImageProvider {
+    
+    // Whenever an imageView in our view hierarchy needs image data it calls this method synchronously on the main queue. We can then either return an image if available OR kick off an asynchronous request to fetch the image from elsewhere, return nil to this call, and notify the corresponding view when the fetch finished at some point in time so it can call this method again to get the image data.
+    
+    
+    // Whenever an imageView in our view hierarchy needs image data it calls this method synchronously on the main queue.
+    func image(for url: URL) -> UIImage? {
         do {
-            try providers.imageCacheProvider.fetchAndCacheImageSynchronously(from: imageUrl)
-            DispatchQueue.main.async {
-                self.updateUI(rowUpdateOption: .groupHeaderRow)
+            if let cachedImage = providers.imageCacheProvider.cachedImage(for: url) {
+                return cachedImage
             }
+            
+            try providers.imageCacheProvider.updateCacheSynchronously(for: url)
+            return providers.imageCacheProvider.cachedImage(for: url)
         } catch {
-            // TODO: Handle error.
+            // TODO: Handle error
             print(error)
+            return nil
         }
     }
-    
-    func willDisplayRow(forEventId eventId: String) {
-        guard let meetupSchedule = self.meetupSchedule else { return }
-        
-        
-        for eventWithRsvps in meetupSchedule.eventsWithRsvps.filter({ $0.event.id == eventId }) {
-            for rsvp in eventWithRsvps.rsvps {
-                let imageUrl = rsvp.memberThumbnailUrl
-                
-                do {
-                    try providers.imageCacheProvider.fetchAndCacheImageSynchronously(from: imageUrl)
-                    DispatchQueue.main.async {
-                        self.updateUI(rowUpdateOption: .eventRow(event: eventWithRsvps.event))
-                    }
-                } catch {
-                    // TODO: Handle error.
-                    print(error, "rsvp.id: \(rsvp.id)")
-                }
-            }
-        }
-    }
-    
-    func didEndDisplayingRow(forGroupId groupId: String) {
-        // TODO: Implement.
-        print(type(of: self), #function)
-    }
-    
-    func didEndDisplayingRow(forEventId eventId: String) {
-        // TODO: Implement.
-        print(type(of: self), #function)
-    }
-    
-    
 }

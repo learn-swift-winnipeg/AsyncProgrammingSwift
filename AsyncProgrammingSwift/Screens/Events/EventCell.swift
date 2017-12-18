@@ -45,7 +45,17 @@ struct EventCellData {
 
 // MARK: - EventCell
 
-class EventCell: UITableViewCell {
+class EventCell: UITableViewCell, ImageUpdateable {
+    var imageProvider: ImageProvider? = nil
+    
+    var updateableImageViews: [UpdateableImageView] = []
+    
+    func imageDataUpdated(for url: URL) {
+        rsvpIconCollectionView.visibleCells
+            .flatMap({ $0 as? ImageUpdateable })
+            .forEach({ $0.imageDataUpdated(for: url) })
+    }
+    
     
     // MARK: - Outlets
     

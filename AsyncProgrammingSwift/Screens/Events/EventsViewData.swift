@@ -10,13 +10,11 @@ struct EventsViewData {
     
     init(
         groupHeaderCellData: GroupHeaderCellData,
-        upcomingEventCellData: [EventCellData],
-        pastEventCellData: [EventCellData])
+        eventCellData: [EventCellData])
     {
         tableSections = [
             .groupHeader(groupHeaderCellData: groupHeaderCellData),
-            .upcomingEvents(rows: upcomingEventCellData),
-            .pastEvents(rows: pastEventCellData)
+            .events(rows: eventCellData)
         ]
     }
 }
