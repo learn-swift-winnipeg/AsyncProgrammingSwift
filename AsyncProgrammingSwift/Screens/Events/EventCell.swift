@@ -14,7 +14,7 @@ struct EventCellData {
     let dateText: String
     let eventNameText: String
     
-    let eventDescriptionText: String
+    let eventDescriptionText: String?
     
     let rsvpIconCellData: [RsvpIconCellData]
     

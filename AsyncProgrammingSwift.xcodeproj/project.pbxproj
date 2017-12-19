@@ -32,6 +32,9 @@
 		0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275D1FDB07390058426B /* RsvpIconCell.swift */; };
 		003327601FDB1B9B0058426B /* Rsvp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0033275F1FDB1B9B0058426B /* Rsvp.swift */; };
 		003327621FDB310A0058426B /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 003327611FDB310A0058426B /* DispatchQueue.swift */; };
+		005A60571FE8C4B900ACE76A /* FifthTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A60561FE8C4B900ACE76A /* FifthTabCoordinator.swift */; };
+		005A60591FE8E08900ACE76A /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A60581FE8E08900ACE76A /* Photo.swift */; };
+		005A605B1FE8E78B00ACE76A /* Member.swift in Sources */ = {isa = PBXBuildFile; fileRef = 005A605A1FE8E78B00ACE76A /* Member.swift */; };
 		008E913C1FDD00F200E6F9AA /* MeetupProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E913B1FDD00F200E6F9AA /* MeetupProvider.swift */; };
 		008E913E1FDD017000E6F9AA /* AsyncResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E913D1FDD017000E6F9AA /* AsyncResult.swift */; };
 		008E91401FDD027300E6F9AA /* Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = 008E913F1FDD027300E6F9AA /* Double.swift */; };
@@ -70,6 +73,9 @@
 		0033275D1FDB07390058426B /* RsvpIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RsvpIconCell.swift; sourceTree = "<group>"; };
 		0033275F1FDB1B9B0058426B /* Rsvp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rsvp.swift; sourceTree = "<group>"; };
 		003327611FDB310A0058426B /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
+		005A60561FE8C4B900ACE76A /* FifthTabCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FifthTabCoordinator.swift; sourceTree = "<group>"; };
+		005A60581FE8E08900ACE76A /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		005A605A1FE8E78B00ACE76A /* Member.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Member.swift; sourceTree = "<group>"; };
 		008E913B1FDD00F200E6F9AA /* MeetupProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetupProvider.swift; sourceTree = "<group>"; };
 		008E913D1FDD017000E6F9AA /* AsyncResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncResult.swift; sourceTree = "<group>"; };
 		008E913F1FDD027300E6F9AA /* Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Double.swift; sourceTree = "<group>"; };
@@ -138,6 +144,7 @@
 				0033273E1FDAC0800058426B /* SecondTabCoordinator.swift */,
 				003327411FDAC0A60058426B /* ThirdTabCoordinator.swift */,
 				003327441FDAC0C20058426B /* FourthTabCoordinator.swift */,
+				005A60561FE8C4B900ACE76A /* FifthTabCoordinator.swift */,
 			);
 			path = "Tab Coordinators";
 			sourceTree = "<group>";
@@ -224,6 +231,8 @@
 				003327591FDAFA2D0058426B /* Group.swift */,
 				003327571FDAFA160058426B /* Event.swift */,
 				0033275F1FDB1B9B0058426B /* Rsvp.swift */,
+				005A60581FE8E08900ACE76A /* Photo.swift */,
+				005A605A1FE8E78B00ACE76A /* Member.swift */,
 			);
 			path = Meetup;
 			sourceTree = "<group>";
@@ -318,15 +327,18 @@
 				0033275E1FDB07390058426B /* RsvpIconCell.swift in Sources */,
 				003327521FDAE2190058426B /* GroupHeaderCell.swift in Sources */,
 				0033273C1FDABEDD0058426B /* Providers.swift in Sources */,
+				005A605B1FE8E78B00ACE76A /* Member.swift in Sources */,
 				001FD02F1FE706B8005C63C5 /* Array.swift in Sources */,
 				003327341FDABC6D0058426B /* AppCoordinator.swift in Sources */,
 				003327451FDAC0C20058426B /* FourthTabCoordinator.swift in Sources */,
 				003327421FDAC0A60058426B /* ThirdTabCoordinator.swift in Sources */,
 				003327211FDABBF10058426B /* AppDelegate.swift in Sources */,
 				00AD39481FDD868C001B730A /* UpdateableImageView.swift in Sources */,
+				005A60591FE8E08900ACE76A /* Photo.swift in Sources */,
 				0033275A1FDAFA2D0058426B /* Group.swift in Sources */,
 				003327561FDAEEAB0058426B /* BorderedView.swift in Sources */,
 				008E91441FDD2CD900E6F9AA /* ImageCacheProvider.swift in Sources */,
+				005A60571FE8C4B900ACE76A /* FifthTabCoordinator.swift in Sources */,
 				0033275C1FDAFAD40058426B /* EventsViewData.swift in Sources */,
 				008E91401FDD027300E6F9AA /* Double.swift in Sources */,
 				008E913E1FDD017000E6F9AA /* AsyncResult.swift in Sources */,

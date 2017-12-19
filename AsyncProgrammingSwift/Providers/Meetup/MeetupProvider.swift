@@ -75,12 +75,12 @@ extension Date {
 extension Rsvp{
     static var random: Rsvp {
         let uuidString = UUID().uuidString
-        return Rsvp(
-            id: uuidString,
-            memberThumbnailURL: URL(string: "https://\(uuidString).jpeg")!
-        )
+        let url = URL(string: "https://\(uuidString).jpeg")!
+        return Rsvp(memberThumbnailURL: url)
     }
 }
+
+// MARK: - ProductionMeetupProvider
 
 class ProductionMeetupProvider: MeetupProvider {
     
@@ -92,5 +92,8 @@ class ProductionMeetupProvider: MeetupProvider {
         resultHandler: @escaping (AsyncResult<MeetupSchedule>) -> Void)
     {
         // TODO: Implement.
+        let groupURL = URL(string: "https://api.meetup.com/learn-swift-winnipeg")
+        let eventsURL = URL(string: "https://api.meetup.com/learn-swift-winnipeg/events?desc=true&status=past%2Cupcoming")!
+        let rsvpsURL = URL(string: "https://api.meetup.com/learn-swift-winnipeg/events/245590889/rsvps")!
     }
 }

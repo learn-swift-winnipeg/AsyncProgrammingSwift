@@ -27,7 +27,7 @@ class TestingImageCacheProvider: ImageCacheProvider {
     private var maxFetchDelay: TimeInterval = 3.0
     
     private let images: [UIImage] = [
-        #imageLiteral(resourceName: "FirstUI Tab Icon"), #imageLiteral(resourceName: "SecondUI Tab Icon"), #imageLiteral(resourceName: "ThirdUI Tab Icon")
+        #imageLiteral(resourceName: "Number 1"), #imageLiteral(resourceName: "Number 2"), #imageLiteral(resourceName: "Number 3"), #imageLiteral(resourceName: "Number 4"), #imageLiteral(resourceName: "Number 5"), #imageLiteral(resourceName: "Number 6")
     ]
     
     // MARK: - Cached Image

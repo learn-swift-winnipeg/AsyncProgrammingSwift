@@ -4,6 +4,9 @@ import UIKit
 
 protocol EventsViewControllerDelegate: ImageProvider {
     func didUpdateURLsForVisibleImages(urls: [URL])
+    
+    func willDisplayImages(for urls: [URL])
+    func didEndDisplayingImages(for urls: [URL])
 }
 
 // MARK: - EventsViewController
@@ -131,15 +134,22 @@ extension EventsViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath)
     {
-        // Something just went out of view, report back to delegate all urls for images which are still visible.
-        let urlsForVisibleUpdateableImageViews = tableView.visibleCells
-            .flatMap({ $0 as? ImageUpdateable })
-            .flatMap({ $0.updateableImageViews })
-            .flatMap({ $0.url })
-        
-        delegate?.didUpdateURLsForVisibleImages(
-            urls: urlsForVisibleUpdateableImageViews
-        )
+        DispatchQueue.main.async {
+            // Something just went out of view, report back to delegate all urls for images which are still visible.
+            let urlsForVisibleUpdateableImageViews = tableView.visibleCells
+                .flatMap({ $0 as? ImageUpdateable })
+                .flatMap({ $0.updateableImageViews })
+                .flatMap({ $0.url })
+            
+            self.delegate?.didUpdateURLsForVisibleImages(
+                urls: urlsForVisibleUpdateableImageViews
+            )
+            
+            if let imageUpdateableCell = cell as? ImageUpdateable {
+                let urls = imageUpdateableCell.updateableImageViews.flatMap({ $0.url })
+                self.delegate?.willDisplayImages(for: urls)
+            }
+        }
     }
     
     func tableView(
@@ -148,14 +158,19 @@ extension EventsViewController: UITableViewDelegate {
         forRowAt indexPath: IndexPath)
     {
         // Something just went out of view, report back to delegate all urls for images which are still visible.
-        let urlsForVisibleUpdateableImageViews = tableView.visibleCells
-            .flatMap({ $0 as? ImageUpdateable })
-            .flatMap({ $0.updateableImageViews })
-            .flatMap({ $0.url })
-        
-        delegate?.didUpdateURLsForVisibleImages(
-            urls: urlsForVisibleUpdateableImageViews
-        )
+//        let urlsForVisibleUpdateableImageViews = tableView.visibleCells
+//            .flatMap({ $0 as? ImageUpdateable })
+//            .flatMap({ $0.updateableImageViews })
+//            .flatMap({ $0.url })
+//
+//        delegate?.didUpdateURLsForVisibleImages(
+//            urls: urlsForVisibleUpdateableImageViews
+//        )
+//
+//        if let imageUpdateableCell = cell as? ImageUpdateable {
+//            let urls = imageUpdateableCell.updateableImageViews.flatMap({ $0.url })
+//            delegate?.didEndDisplayingImages(for: urls)
+//        }
     }
 }
 

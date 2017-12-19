@@ -59,7 +59,8 @@ extension TabCoordinator {
 // MARK: - EventsViewControllerDelegate
 
 extension TabCoordinator {
-    func didUpdateURLsForVisibleImages(urls: [URL]) {
-        // TODO: Implement in conforming types when needed.
-    }
+    // TODO: Implement in conforming types when needed.
+    func didUpdateURLsForVisibleImages(urls: [URL]) {}
+    func willDisplayImages(for urls: [URL]) {}
+    func didEndDisplayingImages(for urls: [URL]) {}
 }

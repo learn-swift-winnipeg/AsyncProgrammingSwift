@@ -15,6 +15,7 @@ class AppCoordinator {
     private var secondTabCoordinator: SecondTabCoordinator?
     private var thirdTabCoordinator: ThirdTabCoordinator?
     private var fourthTabCoordinator: FourthTabCoordinator?
+    private var fifthTabCoordinator: FifthTabCoordinator?
     
     // MARK: - Lifecycle
     
@@ -29,7 +30,7 @@ class AppCoordinator {
         let firstEventsViewController = EventsViewController.loadFromStoryboard()
         firstEventsViewController.tabBarItem = UITabBarItem(
             title: "Sync Serial",
-            image: #imageLiteral(resourceName: "FirstUI Tab Icon"),
+            image: #imageLiteral(resourceName: "Number 1"),
             tag: 1
         )
         firstTabCoordinator = FirstTabCoordinator(
@@ -41,7 +42,7 @@ class AppCoordinator {
         let secondEventsViewController = EventsViewController.loadFromStoryboard()
         secondEventsViewController.tabBarItem = UITabBarItem(
             title: "Async Serial",
-            image: #imageLiteral(resourceName: "SecondUI Tab Icon"),
+            image: #imageLiteral(resourceName: "Number 2"),
             tag: 2
         )
         secondTabCoordinator = SecondTabCoordinator(
@@ -53,7 +54,7 @@ class AppCoordinator {
         let thirdEventsViewController = EventsViewController.loadFromStoryboard()
         thirdEventsViewController.tabBarItem = UITabBarItem(
             title: "Async Parallel",
-            image: #imageLiteral(resourceName: "ThirdUI Tab Icon"),
+            image: #imageLiteral(resourceName: "Number 3"),
             tag: 3
         )
         thirdTabCoordinator = ThirdTabCoordinator(
@@ -64,8 +65,8 @@ class AppCoordinator {
         
         let fourthEventsViewController = EventsViewController.loadFromStoryboard()
         fourthEventsViewController.tabBarItem = UITabBarItem(
-            title: "Async Operations",
-            image: #imageLiteral(resourceName: "FourthUI Tab Icon"),
+            title: "Operations",
+            image: #imageLiteral(resourceName: "Number 4"),
             tag: 4
         )
         fourthTabCoordinator = FourthTabCoordinator(
@@ -73,6 +74,18 @@ class AppCoordinator {
             eventsViewController: fourthEventsViewController
         )
         fourthTabCoordinator?.start()
+        
+        let fifthEventsViewController = EventsViewController.loadFromStoryboard()
+        fifthEventsViewController.tabBarItem = UITabBarItem(
+            title: "Dependencies",
+            image: #imageLiteral(resourceName: "Number 5"),
+            tag: 5
+        )
+        fifthTabCoordinator = FifthTabCoordinator(
+            providers: Providers.forCurrentConfiguration(),
+            eventsViewController: fifthEventsViewController
+        )
+        fifthTabCoordinator?.start()
         
         
         // Add each tab coordinator's view controller to the tab bar controller.
@@ -82,10 +95,11 @@ class AppCoordinator {
             firstEventsViewController,
             secondEventsViewController,
             thirdEventsViewController,
-            fourthEventsViewController
+            fourthEventsViewController,
+            fifthEventsViewController,
         ], animated: false)
         
-        tabBarController.selectedIndex = 3
+        tabBarController.selectedIndex = 0
         
         
         // Set the tab bar controller as the rootViewController of the main application window.
