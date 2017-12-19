@@ -4,9 +4,8 @@ import UIKit
 
 protocol EventsViewControllerDelegate: ImageProvider {
     func didUpdateURLsForVisibleImages(urls: [URL])
-    
     func willDisplayImages(for urls: [URL])
-    func didEndDisplayingImages(for urls: [URL])
+    func shakeEventBegan(_ eventsViewControler: EventsViewController)
 }
 
 // MARK: - EventsViewController
@@ -36,6 +35,12 @@ class EventsViewController: UIViewController {
         
         setupViews()
         tableView.prefetchDataSource = nil
+    }
+    
+    override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+        guard motion == .motionShake else { return }
+        
+        delegate?.shakeEventBegan(self)
     }
     
     // MARK: - Setup
@@ -144,33 +149,18 @@ extension EventsViewController: UITableViewDelegate {
             self.delegate?.didUpdateURLsForVisibleImages(
                 urls: urlsForVisibleUpdateableImageViews
             )
-            
-            if let imageUpdateableCell = cell as? ImageUpdateable {
-                let urls = imageUpdateableCell.updateableImageViews.flatMap({ $0.url })
-                self.delegate?.willDisplayImages(for: urls)
-            }
         }
-    }
-    
-    func tableView(
-        _ tableView: UITableView,
-        didEndDisplaying cell: UITableViewCell,
-        forRowAt indexPath: IndexPath)
-    {
-        // Something just went out of view, report back to delegate all urls for images which are still visible.
-//        let urlsForVisibleUpdateableImageViews = tableView.visibleCells
-//            .flatMap({ $0 as? ImageUpdateable })
-//            .flatMap({ $0.updateableImageViews })
-//            .flatMap({ $0.url })
-//
-//        delegate?.didUpdateURLsForVisibleImages(
-//            urls: urlsForVisibleUpdateableImageViews
-//        )
-//
-//        if let imageUpdateableCell = cell as? ImageUpdateable {
-//            let urls = imageUpdateableCell.updateableImageViews.flatMap({ $0.url })
-//            delegate?.didEndDisplayingImages(for: urls)
-//        }
+        
+        let urls: [URL]
+        switch tableSections[indexPath.section] {
+        case .groupHeader(let groupHeaderCellData):
+            urls = [groupHeaderCellData.groupImageURL]
+        
+        case .events(let rows):
+            urls = rows.flatMap({ $0.rsvpIconCellData.flatMap({ $0.imageURL }) })
+        }
+        
+        delegate?.willDisplayImages(for: urls)
     }
 }
 

@@ -14,8 +14,6 @@ struct EventCellData {
     let dateText: String
     let eventNameText: String
     
-    let eventDescriptionText: String?
-    
     let rsvpIconCellData: [RsvpIconCellData]
     
     // MARK: - Lifecycle
@@ -36,8 +34,6 @@ struct EventCellData {
         
         self.dateText = dateFormatter.string(from: event.startTime)
         self.eventNameText = event.name
-        
-        self.eventDescriptionText = event.eventDescription
         
         self.rsvpIconCellData = rsvpIconCellData
     }
@@ -68,8 +64,6 @@ class EventCell: UITableViewCell, ImageUpdateable {
     
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var eventNameLabel: UILabel!
-    
-    @IBOutlet var eventDescriptionLabel: UILabel!
     
     @IBOutlet var rsvpIconCollectionView: UICollectionView!
     
@@ -103,8 +97,6 @@ class EventCell: UITableViewCell, ImageUpdateable {
         
         self.dateLabel.text = viewData.dateText
         self.eventNameLabel.text = viewData.eventNameText
-        
-        self.eventDescriptionLabel.text = viewData.eventDescriptionText
         
         self.rsvps = viewData.rsvpIconCellData
         

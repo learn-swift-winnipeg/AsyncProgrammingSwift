@@ -1,5 +1,5 @@
 import Foundation
 
 struct Member: Decodable {
-    let photo: Photo
+    let photo: Photo?
 }

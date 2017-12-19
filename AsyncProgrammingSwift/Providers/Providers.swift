@@ -36,8 +36,8 @@ struct Providers {
     
     private static func makeDebugProviders() -> Providers {
         return Providers(
-            meetupProvider: TestingMeetupProvider(),
-            imageCacheProvider: TestingImageCacheProvider()
+            meetupProvider: DebugMeetupProvider(),
+            imageCacheProvider: DebugImageCacheProvider()
         )
     }
     

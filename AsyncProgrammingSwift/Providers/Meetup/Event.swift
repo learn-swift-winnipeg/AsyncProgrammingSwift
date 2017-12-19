@@ -6,7 +6,6 @@ struct Event {
     let id: String
     let startTime: Date
     let name: String
-    let eventDescription: String?
 }
 
 // MARK: - Decodable
@@ -16,7 +15,6 @@ extension Event: Decodable {
         case id
         case startTime = "time"
         case name
-        case eventDescription = "description"
     }
     
     init(from decoder: Decoder) throws {
@@ -28,6 +26,5 @@ extension Event: Decodable {
         self.startTime = Date(timeIntervalSince1970: timeInMilliSeconds / 1000)
         
         self.name = try values.decode(String.self, forKey: CodingKeys.name)
-        self.eventDescription = try values.decodeIfPresent(String.self, forKey: CodingKeys.eventDescription)
     }
 }

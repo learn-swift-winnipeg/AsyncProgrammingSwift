@@ -15,10 +15,7 @@ extension TabCoordinator {
     // MARK: - Fetch
     
     func fetchMeetupScheduleAndUpdateUI() {
-        providers.meetupProvider.fetchMeetupSchedule(
-            forGroupURLname: "learn-swift-winnipeg",
-            resultQueue: .main)
-        { result in
+        providers.meetupProvider.fetchMeetupSchedule(resultQueue: .main) { result in
             switch result {
             case .failure(let error):
                 // TODO: Handle error.
@@ -59,8 +56,29 @@ extension TabCoordinator {
 // MARK: - EventsViewControllerDelegate
 
 extension TabCoordinator {
-    // TODO: Implement in conforming types when needed.
+    // TODO: Implement in conforming types as needed.
     func didUpdateURLsForVisibleImages(urls: [URL]) {}
     func willDisplayImages(for urls: [URL]) {}
-    func didEndDisplayingImages(for urls: [URL]) {}
+    
+    func shakeEventBegan(
+        _ eventsViewController: EventsViewController)
+    {
+        let alertController = UIAlertController(
+            title: nil,
+            message: "Empty this tab's image cache?",
+            preferredStyle: .actionSheet
+        )
+        
+        let resetAction = UIAlertAction(title: "Empty", style: .destructive) { _ in
+            self.providers.imageCacheProvider.emptyCache()
+            self.updateUI(reloadTableView: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        
+        alertController.addAction(resetAction)
+        alertController.addAction(cancelAction)
+        
+        eventsViewController.present(alertController, animated: true)
+    }
 }

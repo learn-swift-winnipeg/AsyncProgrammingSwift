@@ -3,7 +3,7 @@ import UIKit
 // MARK: - RsvpIconCellData
 
 struct RsvpIconCellData {
-    let imageURL: URL
+    let imageURL: URL?
     let imageProvider: ImageProvider
     
     init(rsvp: Rsvp, imageProvider: ImageProvider) {

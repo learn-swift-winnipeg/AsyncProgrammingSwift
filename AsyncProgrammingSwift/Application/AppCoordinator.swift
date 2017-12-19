@@ -7,7 +7,6 @@ class AppCoordinator {
     // MARK: - Stored Properties
     
     private let mainApplicationWindow: UIWindow
-//    private let providers = Providers.forCurrentConfiguration()
     
     // MARK: - Child Coordinators
     

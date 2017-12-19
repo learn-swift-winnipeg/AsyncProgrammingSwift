@@ -137,7 +137,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="V7d-rx-bEV" userLabel="Whole Cell Container">
-                                                    <rect key="frame" x="15" y="19" width="345" height="182.33333333333334"/>
+                                                    <rect key="frame" x="15" y="19" width="345" height="160.33333333333334"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="iHk-rz-qQm" userLabel="Top Row Container">
                                                             <rect key="frame" x="0.0" y="0.0" width="345" height="50"/>
@@ -202,14 +202,14 @@
                                                                 </stackView>
                                                             </subviews>
                                                         </stackView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event description. Up to 3 lines long followed by truncating ..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBr-xw-5I7" userLabel="Description Label">
-                                                            <rect key="frame" x="0.0" y="62" width="345" height="42.333333333333343"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Members who RSVP'ed Yes:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBr-xw-5I7" userLabel="Description Label">
+                                                            <rect key="frame" x="0.0" y="62.000000000000007" width="345" height="20.333333333333336"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hd9-Zg-ff6" userLabel="Bordered RSVP Icon Container" customClass="BorderedView" customModule="AsyncProgrammingSwift" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="116.33333333333334" width="345" height="66"/>
+                                                            <rect key="frame" x="0.0" y="94.333333333333329" width="345" height="65.999999999999986"/>
                                                             <subviews>
                                                                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="JV5-3K-F9B">
                                                                     <rect key="frame" x="8" y="8" width="329" height="50"/>
@@ -306,7 +306,6 @@
                                             <outlet property="dateIconDayLabel" destination="YSp-iE-9Vo" id="dmF-NA-fCw"/>
                                             <outlet property="dateIconMonthLabel" destination="kmO-kw-ytL" id="dZm-1A-bQZ"/>
                                             <outlet property="dateLabel" destination="LXO-dW-IAG" id="dBQ-Oe-NLZ"/>
-                                            <outlet property="eventDescriptionLabel" destination="aBr-xw-5I7" id="uE8-Tb-Osj"/>
                                             <outlet property="eventNameLabel" destination="Tnr-gm-8vZ" id="hLn-mW-Pad"/>
                                             <outlet property="rsvpIconCollectionView" destination="JV5-3K-F9B" id="mBV-ZT-Klc"/>
                                         </connections>
