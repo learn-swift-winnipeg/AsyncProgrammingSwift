@@ -30,9 +30,6 @@ class FirstTabCoordinator: TabCoordinator {
 
 extension FirstTabCoordinator: ImageProvider {
     
-    // Whenever an imageView in our view hierarchy needs image data it calls this method synchronously on the main queue. We can then either return an image if available OR kick off an asynchronous request to fetch the image from elsewhere, return nil to this call, and notify the corresponding view when the fetch finished at some point in time so it can call this method again to get the image data.
-    
-    
     // Whenever an imageView in our view hierarchy needs image data it calls this method synchronously on the main queue.
     func image(for url: URL) -> UIImage? {
         do {
