@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - AppCoordinator
 
-class AppCoordinator {
+class AppCoordinator: NSObject {
     
     // MARK: - Stored Properties
     
@@ -90,6 +90,8 @@ class AppCoordinator {
         // Add each tab coordinator's view controller to the tab bar controller.
         
         let tabBarController = UITabBarController()
+        tabBarController.delegate = self
+        
         tabBarController.setViewControllers([
             firstEventsViewController,
             secondEventsViewController,
@@ -98,7 +100,7 @@ class AppCoordinator {
             fifthEventsViewController,
         ], animated: false)
         
-        tabBarController.selectedIndex = 4
+        tabBarController.selectedIndex = mostRecentTabBarSelectionIndex
         
         
         // Set the tab bar controller as the rootViewController of the main application window.
@@ -106,4 +108,31 @@ class AppCoordinator {
         mainApplicationWindow.rootViewController = tabBarController
         mainApplicationWindow.makeKeyAndVisible()
     }
+    
+    // MARK: - Selected Tab Index
+    
+    private var mostRecentTabBarSelectionIndex: Int {
+        get { return UserDefaults.standard.integer(forKey: UserDefaultsKey.selectedTabIndex) }
+        set { UserDefaults.standard.set(newValue, forKey: UserDefaultsKey.selectedTabIndex) }
+    }
+}
+
+// MARK: - UITabBarControllerDelegate
+
+extension AppCoordinator: UITabBarControllerDelegate {
+    
+    struct UserDefaultsKey {
+        static let selectedTabIndex = "AppCoordinator.UserDefaultsKey.selectedTabIndex"
+    }
+    
+    func tabBarController(
+        _ tabBarController: UITabBarController,
+        didSelect viewController: UIViewController)
+    {
+        if let selectedIndex = tabBarController.viewControllers?.index(of: viewController) {
+            mostRecentTabBarSelectionIndex = selectedIndex
+        }
+    }
+    
+    
 }
