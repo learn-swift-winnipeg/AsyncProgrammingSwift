@@ -66,7 +66,7 @@ extension FourthTabCoordinator: ImageProvider {
                     self.imageCacheUpdateOperations.removeValue(forKey: url)
                     
                     // Notify interested views that the cache has been updated for this url.
-                    self.eventsViewController.imageDataUpdated(for: url)
+                    self.eventsViewController.notifyInterestedViewsOfUpdatedData(for: url)
                 }
             }
         )

@@ -61,7 +61,7 @@ extension ThirdTabCoordinator: ImageProvider {
                     self.urlsOfImagesCurrentlyBeingUpdated.remove(url)
                     
                     // Notify interested views that the cache has been updated for this url.
-                    self.eventsViewController.imageDataUpdated(for: url)
+                    self.eventsViewController.notifyInterestedViewsOfUpdatedData(for: url)
                 }
             } catch {
                 // TODO: Handle error.

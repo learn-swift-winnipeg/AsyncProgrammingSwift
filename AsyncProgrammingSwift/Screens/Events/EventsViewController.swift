@@ -69,7 +69,7 @@ class EventsViewController: UIViewController {
         }
     }
     
-    func imageDataUpdated(for url: URL) {
+    func notifyInterestedViewsOfUpdatedData(for url: URL) {
         tableView.visibleCells
             .flatMap({ $0 as? ImageUpdateable })
             .forEach({ $0.imageDataUpdated(for: url) })
