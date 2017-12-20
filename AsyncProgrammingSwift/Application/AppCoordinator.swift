@@ -133,6 +133,4 @@ extension AppCoordinator: UITabBarControllerDelegate {
             mostRecentTabBarSelectionIndex = selectedIndex
         }
     }
-    
-    
 }

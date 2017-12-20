@@ -244,7 +244,7 @@ class ProductionMeetupProvider: MeetupProvider {
             
             let meetupSchedule = MeetupSchedule(
                 group: group,
-                eventsWithRsvps: eventsWithRsvps
+                eventsWithRsvps: eventsWithRsvps.sorted(by: { $0.event.startTime > $1.event.startTime })
             )
             resultHandler( .success(meetupSchedule) )
         }
