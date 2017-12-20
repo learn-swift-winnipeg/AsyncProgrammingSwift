@@ -10,9 +10,6 @@ class FourthTabCoordinator: TabCoordinator {
     let eventsViewController: EventsViewController
     var meetupSchedule: MeetupSchedule?
     
-    private let imageCacheUpdatingOperationQueue = OperationQueue()
-    private var imageCacheUpdateOperations: [URL: ImageCacheUpdateOperation] = [:]
-    
     // MARK: - Lifecycle
     
     init(
@@ -22,14 +19,23 @@ class FourthTabCoordinator: TabCoordinator {
         self.providers = providers
         self.eventsViewController = eventsViewController
         self.eventsViewController.delegate = self
-        
-        // Limit max concurrent operation count to approximate number of images that can show on screen at a given time. This ensures quick re-prioritization of request when the user scrolls through the table quickly.
-        imageCacheUpdatingOperationQueue.maxConcurrentOperationCount = 20
     }
     
     func start() {
         fetchMeetupScheduleAndUpdateUI()
     }
+    
+    // MARK: - Operation Queue Related
+    
+    private let imageCacheUpdatingOperationQueue: OperationQueue = {
+        let operationQueue = OperationQueue()
+        
+        // Limit max concurrent operation count to ensure quick re-prioritization of request when the user scrolls through the table quickly.
+        operationQueue.maxConcurrentOperationCount = 10
+        return operationQueue
+    }()
+    
+    private var imageCacheUpdateOperations: [URL: ImageCacheUpdateOperation] = [:]
 }
 
 // MARK: - ImageProvider
@@ -44,12 +50,12 @@ extension FourthTabCoordinator: ImageProvider {
             return cachedImage
         }
         
-        // Make sure image isn't already being fetched or we'll be duplicating network requests and loading work. The views will be notified by the original fetch request when the image data is available.
+        // Make sure image isn't already being fetched or we'll be duplicating network requests and UI refreshing work. The interested views will be notified by the original fetch request when the image data is available.
         guard imageCacheUpdateOperations.keys.contains(url) == false else {
             return nil
         }
         
-        // Fetch image and update cache asynchronously, and in parallel (concurrently), on background queues using the Operations API. This enables us to prioritize, and later re-prioritize, fetch requests when the user scrolls quickly through the table.
+        // Fetch image and update cache asynchronously, and in parallel (concurrently), on background queues using the OperationQueue API. This enables us to prioritize, and later re-prioritize, fetch requests when the user scrolls quickly through the table.
         let imageCacheUpdateOperation = ImageCacheUpdateOperation(
             imageCacheProvider: providers.imageCacheProvider,
             url: url,
@@ -73,6 +79,8 @@ extension FourthTabCoordinator: ImageProvider {
         
         // Store this operation so we can prevent duplicate fetches and reprioritize it later.
         imageCacheUpdateOperations[url] = imageCacheUpdateOperation
+        
+        // An OperationQueue immediately starts processing operations once they are added.
         imageCacheUpdatingOperationQueue.addOperation(imageCacheUpdateOperation)
         
         // Return nil here because we have to return something, we don't yet have the image data, and the interested view will be notified later when the image data is available.
@@ -83,11 +91,11 @@ extension FourthTabCoordinator: ImageProvider {
         
         // Here is where the re-prioritization magic happes.
         
-        // Lower priority of queued high priority operations (i.e. operations not yet executing).
-        
+        // Lower the priority of queued high priority operations (not yet executing), for non-visible image urls.
         let queuedHighPriorityOperations = imageCacheUpdateOperations.values
-            .filter({ $0.isExecuting == false })
             .filter({ $0.priority == .high })
+            .filter({ $0.isExecuting == false })
+            .filter({ urls.contains($0.url) == false })
         
         for highPriorityOperation in queuedHighPriorityOperations {
             // Cancel existing operation.
@@ -104,7 +112,7 @@ extension FourthTabCoordinator: ImageProvider {
         }
         
         
-        // Raise priority of queued low priority operations for visible urls.
+        // Raise the priority of queued low priority operations for visible image urls.
         let queuedLowPriorityOperationsForVisibleURLs = imageCacheUpdateOperations.values
             .filter({ urls.contains($0.url) })
             .filter({ $0.isExecuting == false })
@@ -140,7 +148,7 @@ class ImageCacheUpdateOperation: Operation {
     }
     let priority: Priority
     
-    private let resultQueue: OperationQueue
+    private let resultQueue: DispatchQueue
     private let resultHandler: (AsyncResult<UIImage>) -> Void
     
     // MARK: - Lifecycle
@@ -149,7 +157,7 @@ class ImageCacheUpdateOperation: Operation {
         imageCacheProvider: ImageCacheProvider,
         url: URL,
         priority: Priority,
-        resultQueue: OperationQueue,
+        resultQueue: DispatchQueue,
         resultHandler: @escaping (AsyncResult<UIImage>) -> Void)
     {
         self.imageCacheProvider = imageCacheProvider
@@ -174,9 +182,9 @@ class ImageCacheUpdateOperation: Operation {
         do {
             try imageCacheProvider.updateCacheSynchronously(for: url)
             let cachedImage = imageCacheProvider.cachedImage(for: url)!
-            resultQueue.addOperation { self.resultHandler(.success(cachedImage)) }
+            resultQueue.async { self.resultHandler( .success(cachedImage) ) }
         } catch {
-            resultQueue.addOperation { self.resultHandler( .failure(error) ) }
+            resultQueue.async { self.resultHandler( .failure(error) ) }
         }
     }
     

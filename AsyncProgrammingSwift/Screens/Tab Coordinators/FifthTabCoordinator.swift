@@ -10,9 +10,6 @@ class FifthTabCoordinator: TabCoordinator {
     let eventsViewController: EventsViewController
     var meetupSchedule: MeetupSchedule?
     
-    private let imageCacheUpdatingOperationQueue = OperationQueue()
-    private var imageCacheUpdateOperations: [URL: ImageCacheUpdateOperation] = [:]
-    
     // MARK: - Lifecycle
     
     init(
@@ -22,14 +19,16 @@ class FifthTabCoordinator: TabCoordinator {
         self.providers = providers
         self.eventsViewController = eventsViewController
         self.eventsViewController.delegate = self
-        
-        // Limit max concurrent operation count to approximate number of images that can show on screen at a given time. This ensures quick re-prioritization of request when the user scrolls through the table quickly.
-        imageCacheUpdatingOperationQueue.maxConcurrentOperationCount = 20
     }
     
     func start() {
         fetchMeetupScheduleAndUpdateUI()
     }
+    
+    // MARK: - Operation Queue Related
+    
+    private let imageCacheUpdatingOperationQueue = OperationQueue()
+    private var imageCacheUpdateOperations: [URL: ImageCacheUpdateOperation] = [:]
 }
 
 // MARK: - ImageProvider
@@ -45,12 +44,12 @@ extension FifthTabCoordinator: ImageProvider {
     func willDisplayImages(for urls: [URL]) {
         // Fetch all images for this cell before updating view.
         
-        // Make sure image isn't already being fetched or we'll be duplicating network requests and loading work. The views will be notified by the original fetch request when the image data is available.
+        // Make sure image isn't already being fetched or we'll be duplicating network requests and UI refreshing work. The interested views will be notified by the original fetch request when the image data is available.
         let urlsRequiringFetch = urls.filter({ self.imageCacheUpdateOperations.keys.contains($0) == false })
         
-        // Create completionOperation which will only execute after all the ImageCacheUpdateOperation have completed.
+        // Create completionOperation which will only execute after all the ImageCacheUpdateOperations have completed.
         let completionOperation = BlockOperation(block: {
-            OperationQueue.main.addOperation {
+            DispatchQueue.main.async {
                 for url in urlsRequiringFetch {
                     // Remove so the cache can be updated again at a later date if required.
                     self.imageCacheUpdateOperations.removeValue(forKey: url)

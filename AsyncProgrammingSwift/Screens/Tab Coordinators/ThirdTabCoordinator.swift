@@ -10,8 +10,6 @@ class ThirdTabCoordinator: TabCoordinator {
     let eventsViewController: EventsViewController
     var meetupSchedule: MeetupSchedule?
     
-    private var urlsOfImagesCurrentlyBeingUpdated: Set<URL> = []
-    
     // MARK: - Lifecycle
     
     init(
@@ -26,6 +24,10 @@ class ThirdTabCoordinator: TabCoordinator {
     func start() {
         fetchMeetupScheduleAndUpdateUI()
     }
+    
+    // MARK: - Dispatch Queue Related
+    
+    private var urlsOfImagesCurrentlyBeingUpdated: Set<URL> = []
 }
 
 // MARK: - ImageProvider
@@ -40,7 +42,7 @@ extension ThirdTabCoordinator: ImageProvider {
             return cachedImage
         }
         
-        // Make sure image isn't already being fetched or we'll be duplicating network requests and loading work. The views will be notified by the original fetch request when the image data is available.
+        // Make sure image isn't already being fetched or we'll be duplicating network requests and UI refreshing work. The interested views will be notified by the original fetch request when the image data is available.
         guard urlsOfImagesCurrentlyBeingUpdated.contains(url) == false else {
             return nil
         }
@@ -48,7 +50,7 @@ extension ThirdTabCoordinator: ImageProvider {
         // Mark that we're starting the fetch for this url.
         self.urlsOfImagesCurrentlyBeingUpdated.insert(url)
         
-        // Fetch image and update cache asynchronously, and in parallel (concurrently), on background queues using GCD.
+        // Dispatch to random background queue provided by GCD to perform image cache update.
         DispatchQueue.global().async {
             do {
                 // Note this call is blocking (synchronous) but it doesn't freeze the UI because we're not on the main queue right now, we're on a background queue.
