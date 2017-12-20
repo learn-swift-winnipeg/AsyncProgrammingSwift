@@ -66,7 +66,7 @@ extension Date {
     static var randomPastDateWithinOneYear: Date {
         let roughlyOneYearWorthOfSeconds: UInt32 = 60 * 60 * 24 * 365
         let randomNumberOfSecondsWithinOneYear = arc4random_uniform(roughlyOneYearWorthOfSeconds)
-        return Date(timeIntervalSinceNow: TimeInterval(randomNumberOfSecondsWithinOneYear))
+        return Date(timeIntervalSinceNow: TimeInterval(randomNumberOfSecondsWithinOneYear) * -1)
     }
 }
 

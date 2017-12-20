@@ -93,7 +93,7 @@ extension EventsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch tableSections[section] {
         case .groupHeader: return nil
-        case .events: return "Meetups"
+        case .events: return "Events"
         }
     }
     
@@ -139,6 +139,7 @@ extension EventsViewController: UITableViewDelegate {
         willDisplay cell: UITableViewCell,
         forRowAt indexPath: IndexPath)
     {
+        // Used by FourthTabCoordinator to determine which urls still require high priority.
         DispatchQueue.main.async {
             // Something just went out of view, report back to delegate all urls for images which are still visible.
             let urlsForVisibleUpdateableImageViews = tableView.visibleCells
@@ -151,13 +152,16 @@ extension EventsViewController: UITableViewDelegate {
             )
         }
         
+        // Used by FifthTabCoordinator to determine which urls are needed for this cell.
         let urls: [URL]
+        
         switch tableSections[indexPath.section] {
         case .groupHeader(let groupHeaderCellData):
             urls = [groupHeaderCellData.groupImageURL]
         
         case .events(let rows):
-            urls = rows.flatMap({ $0.rsvpIconCellData.flatMap({ $0.imageURL }) })
+            let eventCellData = rows[indexPath.row]
+            urls = eventCellData.rsvpIconCellData.flatMap({ $0.imageURL })
         }
         
         delegate?.willDisplayImages(for: urls)
