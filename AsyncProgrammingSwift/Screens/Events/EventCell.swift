@@ -46,13 +46,13 @@ class EventCell: UITableViewCell, ImageUpdateable {
     
     var updateableImageViews: [UpdateableImageView] {
         return rsvpIconCollectionView.visibleCells
-            .flatMap({ $0 as? ImageUpdateable })
+            .compactMap({ $0 as? ImageUpdateable })
             .flatMap({ $0.updateableImageViews })
     }
     
     func imageDataUpdated(for url: URL) {
         rsvpIconCollectionView.visibleCells
-            .flatMap({ $0 as? ImageUpdateable })
+            .compactMap({ $0 as? ImageUpdateable })
             .forEach({ $0.imageDataUpdated(for: url) })
     }
     

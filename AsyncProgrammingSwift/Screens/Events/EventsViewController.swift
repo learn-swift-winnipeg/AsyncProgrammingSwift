@@ -37,7 +37,7 @@ class EventsViewController: UIViewController {
         tableView.prefetchDataSource = nil
     }
     
-    override func motionBegan(_ motion: UIEventSubtype, with event: UIEvent?) {
+    override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
         guard motion == .motionShake else { return }
         
         delegate?.shakeEventBegan(self)
@@ -54,7 +54,7 @@ class EventsViewController: UIViewController {
         tableView.delegate = self
         
         tableView.estimatedRowHeight = 240
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     // MARK: - Update
@@ -71,7 +71,7 @@ class EventsViewController: UIViewController {
     
     func notifyInterestedViewsOfUpdatedData(for url: URL) {
         tableView.visibleCells
-            .flatMap({ $0 as? ImageUpdateable })
+            .compactMap({ $0 as? ImageUpdateable })
             .forEach({ $0.imageDataUpdated(for: url) })
     }
 }
@@ -143,9 +143,9 @@ extension EventsViewController: UITableViewDelegate {
         DispatchQueue.main.async {
             // Something just went out of view, report back to delegate all urls for images which are still visible.
             let urlsForVisibleUpdateableImageViews = tableView.visibleCells
-                .flatMap({ $0 as? ImageUpdateable })
+                .compactMap({ $0 as? ImageUpdateable })
                 .flatMap({ $0.updateableImageViews })
-                .flatMap({ $0.url })
+                .compactMap({ $0.url })
             
             self.delegate?.didUpdateURLsForVisibleImages(
                 urls: urlsForVisibleUpdateableImageViews
@@ -161,7 +161,7 @@ extension EventsViewController: UITableViewDelegate {
         
         case .events(let rows):
             let eventCellData = rows[indexPath.row]
-            urls = eventCellData.rsvpIconCellData.flatMap({ $0.imageURL })
+            urls = eventCellData.rsvpIconCellData.compactMap({ $0.imageURL })
         }
         
         delegate?.willDisplayImages(for: urls)
